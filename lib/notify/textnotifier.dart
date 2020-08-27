@@ -119,6 +119,13 @@ class MeterreadingTanNotifier with ChangeNotifier{
     notifyListeners();
   }}
 
+class IntroNotifier with ChangeNotifier{
+  List<Intro> _introList = [];
+  UnmodifiableListView<Intro> get introList => UnmodifiableListView(_introList);
+  addIntro(Intro intro){
+    _introList.add(intro);
+    notifyListeners();
+  }}
 
 
 

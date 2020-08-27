@@ -144,7 +144,7 @@ class _DataHallwayState extends State<DataHallway> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -433,6 +433,15 @@ if (hallwayNotifier.hallwayList.isEmpty){
   halldesc = 'null';
     } else { halldesc = 'ddd';}
 
+    _audiodur(){
+        if(Rcurrent?.duration?.inMilliseconds == 0 ){
+        return Text('0:0',style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      } else {
+        return Text('${Rcurrent?.duration?.inMinutes} : ${Rcurrent?.duration?.inSeconds}'
+          ,style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      }
+    }
+
 
 
     return Container(
@@ -537,17 +546,7 @@ if (hallwayNotifier.hallwayList.isEmpty){
                   ),
 
 SizedBox(width: 10,),
-                  Text(
-
-                            '00:${Rcurrent?.duration.toString()}',
-                    textAlign: TextAlign.center,
-
-                    style: TextStyle(
-                      color: Colors.deepPurpleAccent.withOpacity(0.3),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+Container(child: _audiodur(),),
 
                 ],
               ),
@@ -560,9 +559,9 @@ SizedBox(width: 10,),
                     key: _formKey,
                     child: new Theme(
                       data:  ThemeData(
-                        primaryColor: Colors.deepPurpleAccent,
+                        primaryColor: Color(0xff684c4c),
                         accentColor: Colors.white,
-                        hintColor: Colors.deepPurpleAccent,
+                        hintColor: Color(0xff684c4c),
                       ),
                       child: Column(
                         children: <Widget>[
@@ -578,7 +577,7 @@ SizedBox(width: 10,),
 //                                labelText: '${hallwayNotifier.hallwayList.last.description}',
                                 border: UnderlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Colors.deepPurpleAccent
+                                        color: Color(0xff684c4c)
                                     )
                                 )),
                             validator: (String value) {
@@ -605,7 +604,7 @@ SizedBox(width: 10,),
                                 child: Column(
                                   children: <Widget>[
                                     Text("QUANTITY", style: TextStyle(
-                                      color: Colors.deepPurpleAccent,
+                                      color: Color(0xff684c4c),
                                       fontFamily: 'arimo',
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -617,7 +616,7 @@ SizedBox(width: 10,),
                                           filled: true,
                                           border: UnderlineInputBorder(
                                               borderSide: new BorderSide(
-                                                  color: Colors.deepPurpleAccent
+                                                  color: Color(0xff684c4c)
                                               )
                                           )),
                                       validator: (String value) {
@@ -644,7 +643,7 @@ SizedBox(width: 10,),
                                 child: Column(
                                   children: <Widget>[
                                     Text("COLOUR", style: TextStyle(
-                                      color: Colors.deepPurpleAccent,
+                                      color: Color(0xff684c4c),
                                       fontFamily: 'arimo',
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -656,7 +655,7 @@ SizedBox(width: 10,),
                                           filled: true,
                                           border: UnderlineInputBorder(
                                               borderSide: new BorderSide(
-                                                  color: Colors.deepPurpleAccent
+                                                  color: Color(0xff684c4c)
                                               )
                                           )),
                                       validator: (String value) {
@@ -682,9 +681,9 @@ SizedBox(width: 10,),
                                 width: 10,
                               ),
                               Text(
-                                " CONDITION",
+                                " CONDITION AND CLEANING",
                                 style: TextStyle(
-                                  color: Colors.deepPurpleAccent,
+                                  color: Color(0xff684c4c),
                                   fontFamily: 'arimo',
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -705,7 +704,7 @@ SizedBox(width: 10,),
 //                                labelText: '',
                                 border: UnderlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Colors.deepPurpleAccent
+                                        color: Color(0xff684c4c)
                                     )
                                 )),
                             validator: (String value) {
@@ -731,24 +730,24 @@ SizedBox(width: 10,),
                   ),
                 ),
 
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) => Column(
-                    children: <Widget>[
-                      Text(hallwayNotifier.hallwayList[index].colour),
-                      Divider(
-                        thickness: 2,
-                        color: Colors.purple,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8),
-                      ),
-                    ],
-                  ),
-                    itemCount: hallwayNotifier.hallwayList.length,),
-                )
+//                SizedBox(
+//                  height: 200,
+//                  width: 200,
+//                  child: ListView.builder(
+//                    itemBuilder: (BuildContext context, int index) => Column(
+//                    children: <Widget>[
+//                      Text(hallwayNotifier.hallwayList[index].colour),
+//                      Divider(
+//                        thickness: 2,
+//                        color: Colors.purple,
+//                      ),
+//                      Padding(
+//                        padding: EdgeInsets.all(8),
+//                      ),
+//                    ],
+//                  ),
+//                    itemCount: hallwayNotifier.hallwayList.length,),
+//                )
 
               ],
             ),
@@ -762,7 +761,7 @@ SizedBox(width: 10,),
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
 //                      Navigator.of(context).pushNamed('/newInventroy');
 //                          Navigator.of(context).pushNamed('/newInventroy');
@@ -810,7 +809,7 @@ SizedBox(width: 10,),
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: ()  {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Tansuh(hasny: 'b',)));
 //                    Navigator.push(context, MaterialPageRoute(builder: (context) => MMyApp()));

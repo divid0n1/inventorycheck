@@ -147,7 +147,7 @@ class _DataExteriorState extends State<DataExterior> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -178,15 +178,16 @@ class _DataExteriorState extends State<DataExterior> {
     );
   }
   Widget _buildformdescritpion (){
+    ExteriorNotifier exteriorNotifier = Provider.of<ExteriorNotifier>(context);
     return Container(
         width: MediaQuery.of(context).copyWith().size.height / 1.9,
       child: Form (
         key: _formKey,
           child: new Theme(
           data:  ThemeData(
-          primaryColor: Colors.deepPurpleAccent,
+          primaryColor: Color(0xff684c4c),
           accentColor: Colors.white,
-          hintColor: Colors.deepPurpleAccent,
+          hintColor: Color(0xff684c4c),
       ),
             child: Column(
               children: <Widget>[
@@ -196,10 +197,10 @@ class _DataExteriorState extends State<DataExterior> {
                   decoration: InputDecoration(
                     fillColor: Colors.white.withOpacity(0.7),
                       filled: true,
-                      labelText: '',
+                      hintText: exteriorNotifier.exteriorList.isEmpty ? ' ' : '${exteriorNotifier.exteriorList.last.description}',
                       border: UnderlineInputBorder(
                           borderSide: new BorderSide(
-                              color: Colors.deepPurpleAccent
+                              color: Color(0xff684c4c)
                           )
                       )),
                   validator: (String value) {
@@ -226,18 +227,19 @@ class _DataExteriorState extends State<DataExterior> {
                       child: Column(
                         children: <Widget>[
                           Text("QUANTITY", style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),),
                           TextFormField(
                             decoration: InputDecoration(
+                                hintText: exteriorNotifier.exteriorList.isEmpty ? ' ' : '${exteriorNotifier.exteriorList.last.quantity}',
                                 fillColor: Colors.white.withOpacity(0.7),
                                 filled: true,
                                 border: UnderlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Colors.deepPurpleAccent
+                                        color: Color(0xff684c4c)
                                     )
                                 )),
                             validator: (String value) {
@@ -264,18 +266,20 @@ class _DataExteriorState extends State<DataExterior> {
                       child: Column(
                         children: <Widget>[
                           Text("COLOUR", style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),),
                           TextFormField(
                             decoration: InputDecoration(
+                                hintText: exteriorNotifier.exteriorList.isEmpty ? ' ' : '${exteriorNotifier.exteriorList.last.colour}',
+
                                 fillColor: Colors.white.withOpacity(0.7),
                                 filled: true,
                                 border: UnderlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Colors.deepPurpleAccent
+                                        color: Color(0xff684c4c)
                                     )
                                 )),
                             validator: (String value) {
@@ -301,9 +305,9 @@ class _DataExteriorState extends State<DataExterior> {
                   width: 10,
                 ),
                 Text(
-                  " CONDITION",
+                  " CONDITION AND CLEANING",
                   style: TextStyle(
-                    color: Colors.deepPurpleAccent,
+                    color: Color(0xff684c4c),
                     fontFamily: 'arimo',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -319,10 +323,10 @@ class _DataExteriorState extends State<DataExterior> {
                   decoration: InputDecoration(
                       fillColor: Colors.white.withOpacity(0.7),
                       filled: true,
-                      labelText: '',
+                      hintText: exteriorNotifier.exteriorList.isEmpty ? ' ' : '${exteriorNotifier.exteriorList.last.condition}',
                       border: UnderlineInputBorder(
                           borderSide: new BorderSide(
-                              color: Colors.deepPurpleAccent
+                              color: Color(0xff684c4c)
                           )
                       )),
                   validator: (String value) {
@@ -416,7 +420,18 @@ class _DataExteriorState extends State<DataExterior> {
   }
 */
 
+audiodur(){
 
+//  print('${Rcurrent.duration.inSeconds}');
+//return Text('d');
+
+  if(Rcurrent?.duration?.inMilliseconds == 0 ){
+    return Text('0:0',style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+  } else {
+    return Text('${Rcurrent?.duration?.inMinutes} : ${Rcurrent?.duration?.inSeconds}'
+    ,style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -508,18 +523,22 @@ class _DataExteriorState extends State<DataExterior> {
                       ),
                       Container(
                         child: Positioned(
-                          left: 32,
+                          left: 34,
 
-                          top: 10,
+                          bottom: 12,
                           child:
                            Text(
                              '${audioRecNotifier.audioRecList.length ??''}',
 //                            "${Rcurrent?.duration.inSeconds.toString()}",textAlign: TextAlign.center,
 
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.deepPurple,
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
+//                              foreground: Paint().
+//                                ..style = PaintingStyle.stroke
+//                                ..strokeWidth = 2
+//                                ..color = Colors.red,
                             ),
                           ),
                         ),
@@ -529,16 +548,8 @@ class _DataExteriorState extends State<DataExterior> {
                   ),
 
 SizedBox(width: 10,),
-                  Text(
-
-                            '00:${Rcurrent?.duration.toString()}',
-                    textAlign: TextAlign.center,
-
-                    style: TextStyle(
-                      color: Colors.deepPurpleAccent.withOpacity(0.3),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                  Container(
+                    child:audiodur(),
                   ),
 
                 ],
@@ -547,6 +558,7 @@ SizedBox(width: 10,),
                 _builddescriptiontext(),
                 SizedBox(height: 7,),
                 _buildformdescritpion(),
+/*
 
                 SizedBox(
                   height: 200,
@@ -566,6 +578,7 @@ SizedBox(width: 10,),
                   ),
                     itemCount: exteriorNotifier.exteriorList.length,),
                 )
+*/
 
               ],
             ),
@@ -579,7 +592,7 @@ SizedBox(width: 10,),
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
 //                      Navigator.of(context).pushNamed('/newInventroy');
 //                          Navigator.of(context).pushNamed('/newInventroy');
@@ -627,7 +640,7 @@ SizedBox(width: 10,),
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: ()  {
 
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Tansuh(hasny: 'a',)));

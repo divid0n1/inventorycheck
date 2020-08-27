@@ -87,7 +87,7 @@ class _DataKeysState extends State<DataKeys> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -127,9 +127,9 @@ class _DataKeysState extends State<DataKeys> {
         key: _formKey,
         child: new Theme(
           data: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Color(0xff684c4c),
             accentColor: Colors.white,
-            hintColor: Colors.deepPurpleAccent,
+            hintColor: Color(0xff684c4c),
           ),
           child: Column(
             children: <Widget>[
@@ -142,7 +142,7 @@ class _DataKeysState extends State<DataKeys> {
                     hintText:  chaabiNotifier.chaabiList.isEmpty ? ' ' : '${chaabiNotifier.chaabiList.last.description}',
                     border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Description is required';
@@ -169,7 +169,8 @@ class _DataKeysState extends State<DataKeys> {
                         Text(
                           "QUANTITY",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c)
+                            ,
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -182,7 +183,7 @@ class _DataKeysState extends State<DataKeys> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Quanity is required';
@@ -209,7 +210,7 @@ class _DataKeysState extends State<DataKeys> {
                         Text(
                           "COLOUR",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -222,7 +223,7 @@ class _DataKeysState extends State<DataKeys> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Colour is required';
@@ -246,9 +247,9 @@ class _DataKeysState extends State<DataKeys> {
                     width: 10,
                   ),
                   Text(
-                    " CONDITION",
+                    " CONDITION AND CLEANING",
                     style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: Color(0xff684c4c),
                       fontFamily: 'arimo',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -268,7 +269,7 @@ class _DataKeysState extends State<DataKeys> {
                     filled: true,
                     border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Condition is required';
@@ -295,7 +296,14 @@ class _DataKeysState extends State<DataKeys> {
     ChaabiImgNotify chaabiImgNotify = Provider.of<ChaabiImgNotify>(context);
 
     AudioKeysNotifier audioKeysNotifier = Provider.of<AudioKeysNotifier>(context);
-
+    _audiodur(){
+      if(Rcurrent?.duration?.inMilliseconds == 0 ){
+        return Text('0:0',style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      } else {
+        return Text('${Rcurrent?.duration?.inMinutes} : ${Rcurrent?.duration?.inSeconds}'
+          ,style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      }
+    }
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -393,15 +401,7 @@ class _DataKeysState extends State<DataKeys> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      '00:${Rcurrent?.duration.toString()}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.deepPurpleAccent.withOpacity(0.3),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+Container(child:_audiodur(),),
                   ],
                 ),
                 SizedBox(height: 0.7),
@@ -410,25 +410,25 @@ class _DataKeysState extends State<DataKeys> {
                   height: 7,
                 ),
                 _buildformdescritpion(),
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) => Column(
-                      children: <Widget>[
-                        Text(chaabiNotifier.chaabiList[index].colour),
-                        Divider(
-                          thickness: 2,
-                          color: Colors.purple,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                        ),
-                      ],
-                    ),
-                    itemCount: chaabiNotifier.chaabiList.length,
-                  ),
-                )
+//                SizedBox(
+//                  height: 200,
+//                  width: 200,
+//                  child: ListView.builder(
+//                    itemBuilder: (BuildContext context, int index) => Column(
+//                      children: <Widget>[
+//                        Text(chaabiNotifier.chaabiList[index].colour),
+//                        Divider(
+//                          thickness: 2,
+//                          color: Colors.purple,
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.all(8),
+//                        ),
+//                      ],
+//                    ),
+//                    itemCount: chaabiNotifier.chaabiList.length,
+//                  ),
+//                )
               ],
             ),
           ),
@@ -441,7 +441,7 @@ class _DataKeysState extends State<DataKeys> {
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
 //                      Navigator.of(context).pushNamed('/newInventroy');
 //                          Navigator.of(context).pushNamed('/newInventroy');
@@ -491,7 +491,7 @@ class _DataKeysState extends State<DataKeys> {
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Tansuh(hasny: 'f',)));
 //                    Navigator.push(context, MaterialPageRoute(builder: (context) => MMyApp()));

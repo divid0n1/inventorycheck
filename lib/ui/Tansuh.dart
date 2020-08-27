@@ -143,7 +143,7 @@ class _TansuhState extends State<Tansuh> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -161,9 +161,9 @@ class _TansuhState extends State<Tansuh> {
         key: _formKey,
         child: new Theme(
           data: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Color(0xff684c4c),
             accentColor: Colors.white,
-            hintColor: Colors.deepPurpleAccent,
+            hintColor: Color(0xff684c4c),
           ),
           child: Column(
             children: <Widget>[
@@ -176,7 +176,7 @@ class _TansuhState extends State<Tansuh> {
                     hintText:  _deschint(),
                     border: UnderlineInputBorder(
                         borderSide:
-                        new BorderSide(color: Colors.deepPurpleAccent))),
+                        new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Description is required';
@@ -203,7 +203,7 @@ class _TansuhState extends State<Tansuh> {
                         Text(
                           "QUANTITY",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class _TansuhState extends State<Tansuh> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Quanity is required';
@@ -243,7 +243,7 @@ class _TansuhState extends State<Tansuh> {
                         Text(
                           "COLOUR",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ class _TansuhState extends State<Tansuh> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Colour is required';
@@ -282,7 +282,7 @@ class _TansuhState extends State<Tansuh> {
                   Text(
                     " CONDITION",
                     style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: Color(0xff684c4c),
                       fontFamily: 'arimo',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -302,7 +302,7 @@ class _TansuhState extends State<Tansuh> {
                     filled: true,
                     border: UnderlineInputBorder(
                         borderSide:
-                        new BorderSide(color: Colors.deepPurpleAccent))),
+                        new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Condition is required';
@@ -822,7 +822,7 @@ class _TansuhState extends State<Tansuh> {
                       '00:${Rcurrent?.duration.toString()}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.deepPurpleAccent.withOpacity(0.3),
+                        color: Color(0xff684c4c).withOpacity(0.3),
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -866,7 +866,7 @@ class _TansuhState extends State<Tansuh> {
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
 
                       Navigator.pop(
@@ -907,7 +907,7 @@ class _TansuhState extends State<Tansuh> {
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => NewInventory()));
                   },

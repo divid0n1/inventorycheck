@@ -113,3 +113,11 @@ class MeterreadingTan {
   final String condition;
   MeterreadingTan(this.description, this.quantity, this.colour, this.condition);
 }
+
+
+class Intro {
+  final String description;
+  final String quantity;
+  final String colour;
+  Intro(this.description, this.quantity, this.colour);
+}

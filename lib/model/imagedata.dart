@@ -21,6 +21,11 @@ class KitchenImg {
   KitchenImg(this.imagekitchen);
 }
 
+class IntroImg {
+  final File imageintro;
+  IntroImg(this.imageintro);
+}
+
 
 class BedroomImg {
   final File imagebedroom;

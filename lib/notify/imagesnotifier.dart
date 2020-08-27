@@ -158,3 +158,14 @@ class MeterImgTanNotify with ChangeNotifier{
     notifyListeners();
   }
 }
+
+
+class IntroImgNotify with ChangeNotifier{
+  List<IntroImg> _introImgList = List<IntroImg>();
+
+  UnmodifiableListView<IntroImg> get introImgList => UnmodifiableListView(_introImgList);
+  addIntroImg(IntroImg introImg){
+    _introImgList.add(introImg);
+    notifyListeners();
+  }
+}

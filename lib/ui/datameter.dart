@@ -87,7 +87,7 @@ class _DataMeterState extends State<DataMeter> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -121,15 +121,16 @@ class _DataMeterState extends State<DataMeter> {
 
   Widget _buildformdescritpion() {
     MeterreadingNotifier meterreadingNotifier = Provider.of<MeterreadingNotifier>(context);
+
     return Container(
       width: MediaQuery.of(context).copyWith().size.height / 1.9,
       child: Form(
         key: _formKey,
         child: new Theme(
           data: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Color(0xff684c4c),
             accentColor: Colors.white,
-            hintColor: Colors.deepPurpleAccent,
+            hintColor: Color(0xff684c4c),
           ),
           child: Column(
             children: <Widget>[
@@ -142,7 +143,7 @@ class _DataMeterState extends State<DataMeter> {
                     hintText:  meterreadingNotifier.meterreadingList.isEmpty ? ' ' : '${meterreadingNotifier.meterreadingList.last.description}',
                     border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Description is required';
@@ -171,7 +172,7 @@ class _DataMeterState extends State<DataMeter> {
                         Text(
                           "TYPE",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -184,7 +185,7 @@ class _DataMeterState extends State<DataMeter> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Quanity is required';
@@ -213,7 +214,7 @@ class _DataMeterState extends State<DataMeter> {
                         Text(
                           "READING",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -226,7 +227,7 @@ class _DataMeterState extends State<DataMeter> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Colour is required';
@@ -252,7 +253,7 @@ class _DataMeterState extends State<DataMeter> {
                   Text(
                     " METER LOCATION",
                     style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: Color(0xff684c4c),
                       fontFamily: 'arimo',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -271,7 +272,7 @@ class _DataMeterState extends State<DataMeter> {
                     filled: true,
                     hintText:  meterreadingNotifier.meterreadingList.isEmpty ? ' ' : '${meterreadingNotifier.meterreadingList.last.condition}',                    border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Condition is required';
@@ -294,7 +295,14 @@ class _DataMeterState extends State<DataMeter> {
   @override
   Widget build(BuildContext context) {
     MeterreadingNotifier meterreadingNotifier = Provider.of<MeterreadingNotifier>(context);
-
+    _audiodur(){
+      if(Rcurrent?.duration?.inMilliseconds == 0 ){
+        return Text('0:0',style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      } else {
+        return Text('${Rcurrent?.duration?.inMinutes} : ${Rcurrent?.duration?.inSeconds}'
+          ,style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      }
+    }
     MeterImgNotify meterImgNotify = Provider.of<MeterImgNotify>(context);
 
     AudioMeterNotifier audioMeterNotifier = Provider.of<AudioMeterNotifier>(context);
@@ -396,15 +404,7 @@ class _DataMeterState extends State<DataMeter> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      '00:${Rcurrent?.duration.toString()}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.deepPurpleAccent.withOpacity(0.3),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+Container(child:_audiodur(),),
                   ],
                 ),
                 SizedBox(height: 0.7),
@@ -413,25 +413,25 @@ class _DataMeterState extends State<DataMeter> {
                   height: 7,
                 ),
                 _buildformdescritpion(),
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) => Column(
-                      children: <Widget>[
-                        Text(meterreadingNotifier.meterreadingList[index].colour),
-                        Divider(
-                          thickness: 2,
-                          color: Colors.purple,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                        ),
-                      ],
-                    ),
-                    itemCount: meterreadingNotifier.meterreadingList.length,
-                  ),
-                )
+//                SizedBox(
+//                  height: 200,
+//                  width: 200,
+//                  child: ListView.builder(
+//                    itemBuilder: (BuildContext context, int index) => Column(
+//                      children: <Widget>[
+//                        Text(meterreadingNotifier.meterreadingList[index].colour),
+//                        Divider(
+//                          thickness: 2,
+//                          color: Colors.purple,
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.all(8),
+//                        ),
+//                      ],
+//                    ),
+//                    itemCount: meterreadingNotifier.meterreadingList.length,
+//                  ),
+//                )
               ],
             ),
           ),
@@ -444,7 +444,7 @@ class _DataMeterState extends State<DataMeter> {
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
 //                      Navigator.of(context).pushNamed('/newInventroy');
 //                          Navigator.of(context).pushNamed('/newInventroy');
@@ -493,7 +493,7 @@ class _DataMeterState extends State<DataMeter> {
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Tansuh(hasny: 'g',)));
 //                    Navigator.push(context, MaterialPageRoute(builder: (context) => MMyApp()));

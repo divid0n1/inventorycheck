@@ -67,7 +67,7 @@ class _DataSmoteState extends State<DataSmote> {
       child: Container(
         padding: EdgeInsets.only(top: 9),
         child: Text(
-          "Lighting & Sockets",
+          "Smote Detector & Lighting",
           style: TextStyle(
             color: Colors.teal,
             fontFamily: 'arimo',
@@ -87,7 +87,7 @@ class _DataSmoteState extends State<DataSmote> {
         Text(
           "  DESCRIPTION",
           style: TextStyle(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             fontFamily: 'arimo',
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -128,9 +128,9 @@ class _DataSmoteState extends State<DataSmote> {
         key: _formKey,
         child: new Theme(
           data: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Color(0xff684c4c),
             accentColor: Colors.white,
-            hintColor: Colors.deepPurpleAccent,
+            hintColor: Color(0xff684c4c),
           ),
           child: Column(
             children: <Widget>[
@@ -145,7 +145,7 @@ class _DataSmoteState extends State<DataSmote> {
 //                    labelText: '',
                     border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Description is required';
@@ -172,7 +172,7 @@ class _DataSmoteState extends State<DataSmote> {
                         Text(
                           "QUANTITY",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -185,7 +185,7 @@ class _DataSmoteState extends State<DataSmote> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Quanity is required';
@@ -212,7 +212,7 @@ class _DataSmoteState extends State<DataSmote> {
                         Text(
                           "COLOUR",
                           style: TextStyle(
-                            color: Colors.deepPurpleAccent,
+                            color: Color(0xff684c4c),
                             fontFamily: 'arimo',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -226,7 +226,7 @@ class _DataSmoteState extends State<DataSmote> {
                               filled: true,
                               border: UnderlineInputBorder(
                                   borderSide: new BorderSide(
-                                      color: Colors.deepPurpleAccent))),
+                                      color: Color(0xff684c4c)))),
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Colour is required';
@@ -250,9 +250,9 @@ class _DataSmoteState extends State<DataSmote> {
                     width: 10,
                   ),
                   Text(
-                    " CONDITION",
+                    " CONDITION AND CLEANING",
                     style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: Color(0xff684c4c),
                       fontFamily: 'arimo',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -273,7 +273,7 @@ class _DataSmoteState extends State<DataSmote> {
 
                     border: UnderlineInputBorder(
                         borderSide:
-                            new BorderSide(color: Colors.deepPurpleAccent))),
+                            new BorderSide(color: Color(0xff684c4c)))),
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Condition is required';
@@ -300,7 +300,14 @@ class _DataSmoteState extends State<DataSmote> {
     SmoteImgNotify smoteImgNotify = Provider.of<SmoteImgNotify>(context);
 
       AudioSmoteNotifier audioSmoteNotifier = Provider.of<AudioSmoteNotifier>(context);
-
+    _audiodur(){
+      if(Rcurrent?.duration?.inMilliseconds == 0 ){
+        return Text('0:0',style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      } else {
+        return Text('${Rcurrent?.duration?.inMinutes} : ${Rcurrent?.duration?.inSeconds}'
+          ,style: TextStyle(color: Colors.deepPurple.withOpacity(0.5),fontSize: 25,),);
+      }
+    }
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -398,15 +405,7 @@ class _DataSmoteState extends State<DataSmote> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      '00:${Rcurrent?.duration.toString()}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.deepPurpleAccent.withOpacity(0.3),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+Container(child: _audiodur(),),
                   ],
                 ),
                 SizedBox(height: 0.7),
@@ -415,25 +414,25 @@ class _DataSmoteState extends State<DataSmote> {
                   height: 7,
                 ),
                 _buildformdescritpion(),
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) => Column(
-                      children: <Widget>[
-                        Text(smoteNotifier.smoteList[index].colour),
-                        Divider(
-                          thickness: 2,
-                          color: Colors.purple,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                        ),
-                      ],
-                    ),
-                    itemCount: smoteNotifier.smoteList.length,
-                  ),
-                )
+//                SizedBox(
+//                  height: 200,
+//                  width: 200,
+//                  child: ListView.builder(
+//                    itemBuilder: (BuildContext context, int index) => Column(
+//                      children: <Widget>[
+//                        Text(smoteNotifier.smoteList[index].colour),
+//                        Divider(
+//                          thickness: 2,
+//                          color: Colors.purple,
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.all(8),
+//                        ),
+//                      ],
+//                    ),
+//                    itemCount: smoteNotifier.smoteList.length,
+//                  ),
+//                )
               ],
             ),
           ),
@@ -446,7 +445,7 @@ class _DataSmoteState extends State<DataSmote> {
                   child: FloatingActionButton(
                     heroTag: "exleft",
                     mini: true,
-                    backgroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: Color(0xff684c4c),
                     onPressed: () {
                       Navigator.pop(
                           context,
@@ -493,7 +492,7 @@ class _DataSmoteState extends State<DataSmote> {
                 child: FloatingActionButton(
                   heroTag: "exnext",
                   mini: true,
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Color(0xff684c4c),
                   onPressed: () {
 //                    Navigator.push(context, MaterialPageRoute(builder: (context) => MMyApp()));
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Tansuh(hasny: 'c',)));

@@ -75,7 +75,7 @@ void initState() {
       break;
     case 'be':
       {
-        imgtitle = 'BedRoom Other';
+        imgtitle = 'BedRoom Interior';
       }
       break;
     case '6':
@@ -151,7 +151,7 @@ _buildtitlefloor (){
               bottomRight: const Radius.circular(25.0)),
           color: Colors.white.withOpacity(1),
           border: new Border.all(
-            color: Colors.deepPurpleAccent,
+            color: Color(0xff684c4c),
             width: 2,
           ),
           boxShadow: [
@@ -168,7 +168,7 @@ _buildtitlefloor (){
             child: Text(
               "Take photo",
               style: TextStyle(
-                  color: Colors.deepPurpleAccent,
+                  color: Color(0xff684c4c),
                   fontFamily: 'arimo',
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -815,7 +815,7 @@ _buildtitlefloor (){
 //                    Navigator.push(context, MaterialPageRoute(builder: (context) => Exterior(images: images,imagesleng: imagesleng,)));
 //                    widget.floordata = "";
                   },
-                  child: Icon(Icons.arrow_back_ios),foregroundColor: Colors.deepPurpleAccent,),
+                  child: Icon(Icons.arrow_back_ios),foregroundColor: Color(0xff684c4c),),
               ),),
             Align(
               alignment: Alignment.bottomCenter,
@@ -837,7 +837,7 @@ _buildtitlefloor (){
                         ),
                         color: Colors.white.withOpacity(1),
                         border: new Border.all(
-                          color: Colors.deepPurpleAccent,
+                          color: Color(0xff684c4c),
 
                           width: 2,
                         ),
@@ -859,7 +859,7 @@ _buildtitlefloor (){
                               Text(
                                 " Take",
                                 style: TextStyle(
-                                    color: Colors.deepPurpleAccent,
+                                    color: Color(0xff684c4c),
                                     fontFamily: 'arimo',
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
@@ -867,7 +867,7 @@ _buildtitlefloor (){
                               Text(
                                 " photo",
                                 style: TextStyle(
-                                    color: Colors.deepPurpleAccent,
+                                    color: Color(0xff684c4c),
                                     fontFamily: 'arimo',
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
@@ -889,7 +889,7 @@ _buildtitlefloor (){
                             bottomRight: const Radius.circular(25.0)),
                         color: Colors.white.withOpacity(1),
                         border: new Border.all(
-                          color: Colors.deepPurpleAccent,
+                          color: Color(0xff684c4c),
                           width: 2,
                         ),
                         boxShadow: [
@@ -910,7 +910,7 @@ _buildtitlefloor (){
                               Text(
                                 "Pick",
                                 style: TextStyle(
-                                    color: Colors.deepPurpleAccent,
+                                    color: Color(0xff684c4c),
                                     fontFamily: 'arimo',
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
@@ -918,7 +918,7 @@ _buildtitlefloor (){
                               Text(
                                 "Gallery",
                                 style: TextStyle(
-                                    color: Colors.deepPurpleAccent,
+                                    color: Color(0xff684c4c),
                                     fontFamily: 'arimo',
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),

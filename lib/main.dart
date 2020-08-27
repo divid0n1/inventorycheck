@@ -60,6 +60,12 @@ void main() => runApp(
           ChangeNotifierProvider(create: (context) => MeterreadingTanNotifier()),
 
 
+          ChangeNotifierProvider(create: (context) => IntroImgNotify()),
+          ChangeNotifierProvider(create: (context) => IntroNotifier()),
+
+
+
+
 
 
         ],
