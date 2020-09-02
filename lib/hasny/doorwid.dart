@@ -1,90 +1,200 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:flutter/services.dart';
+import 'package:inventorycheck/notify/textnotifier.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:provider/provider.dart';
+import 'package:inventorycheck/notify/imagesnotifier.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyApp> {
-  String path;
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
+class maani extends StatelessWidget {
+  final pdf = pw.Document();
 
-    return directory.path;
-  }
 
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/teste.pdf');
-  }
 
-  Future<File> writeCounter(Uint8List stream) async {
-    final file = await _localFile;
 
-    // Write the file
-    return file.writeAsBytes(stream);
-  }
-
-  Future<bool> existsFile() async {
-    final file = await _localFile;
-    return file.exists();
-  }
-
-  Future<Uint8List> fetchPost() async {
-    final response = await http.get(
-        'https://expoforest.com.br/wp-content/uploads/2017/05/exemplo.pdf');
-    final responseJson = response.bodyBytes;
-
-    return responseJson;
-  }
-
-  void loadPdf() async {
-    await writeCounter(await fetchPost());
-    await existsFile();
-    path = (await _localFile).path;
-
-    if (!mounted) return;
-
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              if (path != null)
-                Container(
-                  height: 300.0,
-                  child: PdfViewer(
-                    filePath: path,
+    writeOnPdfCover() async {
+      IntroImgNotify introImgNotify = Provider.of<IntroImgNotify>(context);
+      IntroNotifier introNotifier = Provider.of<IntroNotifier>(context);
+
+      if (introNotifier.introList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf");
+        final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");
+        final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");
+        final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont(
+          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
+        );
+        PdfImage _bgm;
+
+        // Create a PDF document.
+        _bgm = PdfImage.file(
+          pdf.document,
+          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
+        );
+
+        pdf.addPage(pw.MultiPage(
+          theme: pwtheme,
+          pageFormat: PdfPageFormat.a3.landscape,
+          margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) {
+            return <pw.Widget>[
+              pw.Stack(children: <pw.Widget>[
+                pw.Container(
+                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
+                ),
+                pw.Container(
+                  padding: pw.EdgeInsets.only(
+                    top: 10,
+                  ),
+                  child: pw.Row(children: <pw.Widget>[
+                    pw.Text('Check Inventory',
+                        style: pw.TextStyle(
+                          font: herrvon,
+                          fontSize: 50.0,
+                        )),
+                    pw.SizedBox(
+                      width: 750,
+                    ),
+                    pw.Column(children: <pw.Widget>[
+                      pw.Text('POWERED BY'),
+                      pw.UrlLink(
+                        destination: 'https://www.eutopianlettings.co.uk',
+                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
+                      ),
+                    ])
+                  ]),
+                ),
+                pw.Container(
+                  padding: pw.EdgeInsets.only(
+                    top: 75,
+                    left: 30,
+                  ),
+                  child: pw.Container(
+                    padding: pw.EdgeInsets.only(
+                      top: 20,
+                      left: 150,
+                    ),
+                    height: 700,
+                    width: 1115,
+                    decoration: pw.BoxDecoration(
+                      color: PdfColor.fromInt(0xffffffff),
+                    ),
+                    child: pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: <pw.Widget>[
+//      pw.SizedBox(height:100,),
+                          pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.start,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: <pw.Widget>[
+                                pw.Container(
+                                  height: 40,
+                                  width: 370,
+                                  decoration: const pw.BoxDecoration(
+                                      color: PdfColor.fromInt(0xfff3ded4),
+                                      borderRadius: 6),
+                                  child: pw.Center(
+                                      child: pw.Text('INVENTORY AND CHECK IN: ',
+                                          style: pw.TextStyle(
+                                            fontSize: 23,
+                                          ))),
+                                ),
+                                pw.SizedBox(
+                                  height: 10,
+                                ),
+                                pw.Container(
+                                    padding: pw.EdgeInsets.only(
+                                      left: 55,
+                                    ),
+                                    child: pw.Column(children: <pw.Widget>[
+                                      pw.Container(
+                                        height: 35,
+                                        width: 450,
+                                        decoration: const pw.BoxDecoration(
+                                            color: PdfColor.fromInt(0xffffffff),
+                                            borderRadius: 6),
+                                        child: pw.Text(
+                                            'Property Address: ${introNotifier.introList.isNotEmpty ? introNotifier.introList.last.description : 'NA'}',
+                                            style: pw.TextStyle(
+                                              font: alice,
+                                              fontSize: 23,
+                                            )),
+                                      ),
+                                      pw.SizedBox(
+                                        width: 10,
+                                      ),
+                                      pw.Container(
+                                        height: 35,
+                                        width: 450,
+                                        decoration: const pw.BoxDecoration(
+                                            color: PdfColor.fromInt(0xffffffff),
+                                            borderRadius: 6),
+                                        child: pw.Text(
+                                            'Reference Number: ${introNotifier.introList.isNotEmpty ? introNotifier.introList.last.quantity : 'NA'}',
+                                            style: pw.TextStyle(
+                                              font: alice,
+                                              fontSize: 23,
+                                            )),
+                                      ),
+                                      pw.SizedBox(
+                                        width: 10,
+                                      ),
+                                      pw.Container(
+                                        height: 35,
+                                        width: 450,
+                                        decoration: const pw.BoxDecoration(
+                                            color: PdfColor.fromInt(0xffffffff),
+                                            borderRadius: 6),
+                                        child: pw.Text(
+                                            'Date of inspection: ${introNotifier.introList.isNotEmpty ? introNotifier.introList.last.colour : 'NA'}',
+                                            style: pw.TextStyle(
+                                              font: alice,
+                                              fontSize: 23,
+                                            )),
+                                      ),
+                                    ]))
+                              ]),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                          pw.Image(
+                            PdfImage.file(pdf.document,
+                                bytes: File(introImgNotify
+                                    .introImgList.last.imageintro.path)
+                                    .readAsBytesSync()),
+                            height: 450,
+                            width: 750,
+                            fit: pw.BoxFit.cover,
+                          ),
+
+
+                        ]),
                   ),
                 )
-              else
-                Text("Pdf is not Loaded"),
-              RaisedButton(
-                child: Text("Load pdf"),
-                onPressed: loadPdf,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              ]),
+
+
+            ];
+          },
+        ));
+      }
+
+
+    }
+
+    return Container();
+
+
   }
 }

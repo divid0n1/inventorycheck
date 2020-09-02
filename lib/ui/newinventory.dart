@@ -2,265 +2,34 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/services.dart';
-import 'package:inventorycheck/hasny/notiwidget.dart';
+import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
+import 'package:inventorycheck/NotifierList/BedroomText.dart';
+import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
+import 'package:inventorycheck/NotifierList/ExteriorText.dart';
+import 'package:inventorycheck/NotifierList/HallwayPhoto.dart';
+import 'package:inventorycheck/NotifierList/HallwayText.dart';
+import 'package:inventorycheck/NotifierList/KeysText.dart';
+import 'package:inventorycheck/NotifierList/KitchenPhoto.dart';
+import 'package:inventorycheck/NotifierList/KitchenText.dart';
+import 'package:inventorycheck/NotifierList/MeterText.dart';
+import 'package:inventorycheck/NotifierList/SmotePhoto.dart';
+import 'package:inventorycheck/NotifierList/SmoteText.dart';
 import 'package:inventorycheck/notify/textnotifier.dart';
+import 'package:inventorycheck/ui/Category.dart';
+import 'package:inventorycheck/ui/ElecMeter.dart';
 import 'package:inventorycheck/ui/apphome.dart';
 import 'package:flutter/material.dart';
-import 'package:inventorycheck/ui/databedroom.dart';
-import 'package:inventorycheck/ui/dataexterior.dart';
-import 'package:inventorycheck/ui/datahallway.dart';
-import 'package:inventorycheck/ui/datakeys.dart';
-import 'package:inventorycheck/ui/datakitchen.dart';
-import 'package:inventorycheck/ui/datameter.dart';
-import 'package:inventorycheck/ui/datasmote.dart';
-import 'package:inventorycheck/ui/pdfviewer.dart';
-
+import 'package:inventorycheck/ui/InventKey.dart';
+import 'package:inventorycheck/ui/introInvent.dart';
+import 'package:inventorycheck/ui/smokeDe.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:provider/provider.dart';
-import 'package:inventorycheck/model/imagedata.dart';
 import 'package:inventorycheck/notify/imagesnotifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewInventory extends StatelessWidget {
-  Widget _buildtitle() {
-    return Container(
-        padding: EdgeInsets.only(top: 50),
-        child: Center(
-          child: Text(
-            "123 PORTLAND RD, LONDON",
-            style: TextStyle(
-              fontFamily: 'arimo',
-              fontSize: 25,
-            ),
-          ),
-        ));
-  }
-
-  Widget _btnexterior() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.6),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Exterior",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnhallway() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Hallway",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnsmotedetect() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Ceiling",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnkitchen() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Kitchen",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnbedroom() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Bedroom 1",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnkeys() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Keys",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
-
-  Widget _btnmeter() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(25.0),
-            topRight: const Radius.circular(25.0),
-            bottomLeft: const Radius.circular(25.0),
-            bottomRight: const Radius.circular(25.0)),
-        color: Colors.white.withOpacity(0.7),
-        border: new Border.all(color: Colors.blueGrey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            offset: Offset(5, 5),
-          ),
-        ],
-      ),
-      height: 55,
-      width: 240,
-      child: Center(
-          child: Text(
-        "Meter readings",
-        style: TextStyle(
-          color: Color(0xff684c4c),
-          fontFamily: 'alice',
-          fontSize: 25,
-        ),
-      )),
-    );
-  }
 
   final pdf = pw.Document();
 
@@ -268,65 +37,432 @@ class NewInventory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ExteriorNotifier exteriorNotifier = Provider.of<ExteriorNotifier>(context);
-    HallwayNotifier hallwayNotifier = Provider.of<HallwayNotifier>(context);
-    SmoteNotifier smoteNotifier = Provider.of<SmoteNotifier>(context);
-    KitchenNotifier kitchenNotifier = Provider.of<KitchenNotifier>(context);
-    BedroomNotifier bedroomNotifier = Provider.of<BedroomNotifier>(context);
-    ChaabiNotifier chaabiNotifier = Provider.of<ChaabiNotifier>(context);
-    MeterreadingNotifier meterreadingNotifier =
-        Provider.of<MeterreadingNotifier>(context);
-    IntroNotifier introNotifier = Provider.of<IntroNotifier>(context);
 
-    ExteriorImgNotifier exteriorImgNotifier =
-        Provider.of<ExteriorImgNotifier>(context);
-    HallwayImgNotify hallwayImgNotify = Provider.of<HallwayImgNotify>(context);
-    SmoteImgNotify smoteImgNotify = Provider.of<SmoteImgNotify>(context);
-    KitchenImgNotify kitchenImgNotify = Provider.of<KitchenImgNotify>(context);
-    BedroomImgNotify bedroomImgNotify = Provider.of<BedroomImgNotify>(context);
-    ChaabiImgNotify chaabiImgNotify = Provider.of<ChaabiImgNotify>(context);
-    MeterImgNotify meterImgNotify = Provider.of<MeterImgNotify>(context);
+      //New List
+    ExtFrameNotifier extFrameNotifier = Provider.of<ExtFrameNotifier>(context);
+    ExtExdoorNotifier extExdoorNotifier = Provider.of<ExtExdoorNotifier>(context);
+    ExtIndoorNotifier extIndoorNotifier = Provider.of<ExtIndoorNotifier>(context);
+    ExtCeilingNotifier extCeilingNotifier = Provider.of<ExtCeilingNotifier>(context);
+    ExtLightNotifier extLightNotifier = Provider.of<ExtLightNotifier>(context);
+    ExtWallsNotifier extWallsNotifier = Provider.of<ExtWallsNotifier>(context);
+    ExtWindowsNotifier extWindowsNotifier = Provider.of<ExtWindowsNotifier>(context);
+    ExtFramePhNotifier extFramePhNotifier = Provider.of<ExtFramePhNotifier>(context);
+    ExtExdoorPhNotifier extExdoorPhNotifier = Provider.of<ExtExdoorPhNotifier>(context);
+    ExtIndoorPhNotifier extIndoorPhNotifier = Provider.of<ExtIndoorPhNotifier>(context);
+    ExtCeilingPhNotifier extCeilingPhNotifier = Provider.of<ExtCeilingPhNotifier>(context);
+    ExtLightPhNotifier extLightPhNotifier = Provider.of<ExtLightPhNotifier>(context);
+    ExtWallsPhNotifier extWallsPhNotifier = Provider.of<ExtWallsPhNotifier>(context);
+    ExtWindowsPhNotifier extWindowsPhNotifier = Provider.of<ExtWindowsPhNotifier>(context);
+    HalFrameNotifier halFrameNotifier = Provider.of<HalFrameNotifier>(context);
+    HalExdoorNotifier halExdoorNotifier = Provider.of<HalExdoorNotifier>(context);
+    HalIndoorNotifier halIndoorNotifier = Provider.of<HalIndoorNotifier>(context);
+    HalCeilingNotifier halCeilingNotifier = Provider.of<HalCeilingNotifier>(context);
+    HalLightNotifier halLightNotifier = Provider.of<HalLightNotifier>(context);
+    HalWallsNotifier halWallsNotifier = Provider.of<HalWallsNotifier>(context);
+    HalWindowsNotifier halWindowsNotifier = Provider.of<HalWindowsNotifier>(context);
+    HalFramePhNotifier halFramePhNotifier = Provider.of<HalFramePhNotifier>(context);
+    HalExdoorPhNotifier halExdoorPhNotifier = Provider.of<HalExdoorPhNotifier>(context);
+    HalIndoorPhNotifier halIndoorPhNotifier = Provider.of<HalIndoorPhNotifier>(context);
+    HalCeilingPhNotifier halCeilingPhNotifier = Provider.of<HalCeilingPhNotifier>(context);
+    HalLightPhNotifier halLightPhNotifier = Provider.of<HalLightPhNotifier>(context);
+    HalWallsPhNotifier halWallsPhNotifier = Provider.of<HalWallsPhNotifier>(context);
+    HalWindowsPhNotifier halWindowsPhNotifier = Provider.of<HalWindowsPhNotifier>(context);
+    SmoFrameNotifier smoFrameNotifier = Provider.of<SmoFrameNotifier>(context);
+    SmoExdoorNotifier smoExdoorNotifier = Provider.of<SmoExdoorNotifier>(context);
+    SmoIndoorNotifier smoIndoorNotifier = Provider.of<SmoIndoorNotifier>(context);
+    SmoCeilingNotifier smoCeilingNotifier = Provider.of<SmoCeilingNotifier>(context);
+    SmoLightNotifier smoLightNotifier = Provider.of<SmoLightNotifier>(context);
+    SmoWallsNotifier smoWallsNotifier = Provider.of<SmoWallsNotifier>(context);
+    SmoWindowsNotifier smoWindowsNotifier = Provider.of<SmoWindowsNotifier>(context);
+    SmoFramePhNotifier smoFramePhNotifier = Provider.of<SmoFramePhNotifier>(context);
+    SmoExdoorPhNotifier smoExdoorPhNotifier = Provider.of<SmoExdoorPhNotifier>(context);
+    SmoIndoorPhNotifier smoIndoorPhNotifier = Provider.of<SmoIndoorPhNotifier>(context);
+    SmoCeilingPhNotifier smoCeilingPhNotifier = Provider.of<SmoCeilingPhNotifier>(context);
+    SmoLightPhNotifier smoLightPhNotifier = Provider.of<SmoLightPhNotifier>(context);
+    SmoWallsPhNotifier smoWallsPhNotifier = Provider.of<SmoWallsPhNotifier>(context);
+    SmoWindowsPhNotifier smoWindowsPhNotifier = Provider.of<SmoWindowsPhNotifier>(context);
+    KitFrameNotifier kitFrameNotifier = Provider.of<KitFrameNotifier>(context);
+    KitExdoorNotifier kitExdoorNotifier = Provider.of<KitExdoorNotifier>(context);
+    KitIndoorNotifier kitIndoorNotifier = Provider.of<KitIndoorNotifier>(context);
+    KitCeilingNotifier kitCeilingNotifier = Provider.of<KitCeilingNotifier>(context);
+    KitLightNotifier kitLightNotifier = Provider.of<KitLightNotifier>(context);
+    KitWallsNotifier kitWallsNotifier = Provider.of<KitWallsNotifier>(context);
+    KitWindowsNotifier kitWindowsNotifier = Provider.of<KitWindowsNotifier>(context);
+    KitFramePhNotifier kitFramePhNotifier = Provider.of<KitFramePhNotifier>(context);
+    KitExdoorPhNotifier kitExdoorPhNotifier = Provider.of<KitExdoorPhNotifier>(context);
+    KitIndoorPhNotifier kitIndoorPhNotifier = Provider.of<KitIndoorPhNotifier>(context);
+    KitCeilingPhNotifier kitCeilingPhNotifier = Provider.of<KitCeilingPhNotifier>(context);
+    KitLightPhNotifier kitLightPhNotifier = Provider.of<KitLightPhNotifier>(context);
+    KitWallsPhNotifier kitWallsPhNotifier = Provider.of<KitWallsPhNotifier>(context);
+    KitWindowsPhNotifier kitWindowsPhNotifier = Provider.of<KitWindowsPhNotifier>(context);
+    BedFrameNotifier bedFrameNotifier = Provider.of<BedFrameNotifier>(context);
+    BedExdoorNotifier bedExdoorNotifier = Provider.of<BedExdoorNotifier>(context);
+    BedIndoorNotifier bedIndoorNotifier = Provider.of<BedIndoorNotifier>(context);
+    BedCeilingNotifier bedCeilingNotifier = Provider.of<BedCeilingNotifier>(context);
+    BedLightNotifier bedLightNotifier = Provider.of<BedLightNotifier>(context);
+    BedWallsNotifier bedWallsNotifier = Provider.of<BedWallsNotifier>(context);
+    BedWindowsNotifier bedWindowsNotifier = Provider.of<BedWindowsNotifier>(context);
+    BedFramePhNotifier bedFramePhNotifier = Provider.of<BedFramePhNotifier>(context);
+    BedExdoorPhNotifier bedExdoorPhNotifier = Provider.of<BedExdoorPhNotifier>(context);
+    BedIndoorPhNotifier bedIndoorPhNotifier = Provider.of<BedIndoorPhNotifier>(context);
+    BedCeilingPhNotifier bedCeilingPhNotifier = Provider.of<BedCeilingPhNotifier>(context);
+    BedLightPhNotifier bedLightPhNotifier = Provider.of<BedLightPhNotifier>(context);
+    BedWallsPhNotifier bedWallsPhNotifier = Provider.of<BedWallsPhNotifier>(context);
+    BedWindowsPhNotifier bedWindowsPhNotifier = Provider.of<BedWindowsPhNotifier>(context);
+    GasMeterNotifier gasMeterNotifier = Provider.of<GasMeterNotifier>(context);
+    GasMeterPhNotifier gasMeterPhNotifier = Provider.of<GasMeterPhNotifier>(context);
+    ElecMeterNotifier elecMeterNotifier = Provider.of<ElecMeterNotifier>(context);
+    ElecMeterPhNotifier elecMeterPhNotifier = Provider.of<ElecMeterPhNotifier>(context);
+    InventKeyNotifier inventKeyNotifier = Provider.of<InventKeyNotifier>(context);
+    InventKeyPhNotifier inventKeyPhNotifier = Provider.of<InventKeyPhNotifier>(context);
     IntroImgNotify introImgNotify = Provider.of<IntroImgNotify>(context);
+    IntroNotifier introNotifier = Provider.of<IntroNotifier>(context);
+    SmokeDeNotifier smokeDeNotifier = Provider.of<SmokeDeNotifier>(context);
+    SmokeDePhNotifier smokeDePhNotifier = Provider.of<SmokeDePhNotifier>(context);
 
-    ExteriorTanNotifier exteriorTanNotifier =
-        Provider.of<ExteriorTanNotifier>(context);
-    HallwayTanNotifier hallwayTanNotifier =
-        Provider.of<HallwayTanNotifier>(context);
-    SmoteTanNotifier smoteTanNotifier = Provider.of<SmoteTanNotifier>(context);
-    KitchenTanNotifier kitchenTanNotifier =
-        Provider.of<KitchenTanNotifier>(context);
-    BedroomTanNotifier bedroomTanNotifier =
-        Provider.of<BedroomTanNotifier>(context);
-    ChaabiTanNotifier chaabiTanNotifier =
-        Provider.of<ChaabiTanNotifier>(context);
-    MeterreadingTanNotifier meterreadingTanNotifier =
-        Provider.of<MeterreadingTanNotifier>(context);
+    _checkExterior(){
+      if(introImgNotify.introImgList.isNotEmpty || introNotifier.introList.isNotEmpty
+      /*extFrameNotifier.extFrameList.isNotEmpty || extExdoorNotifier.extExdoorList.isNotEmpty ||
+          extIndoorNotifier.extIndoorList.isNotEmpty || extCeilingNotifier.extCeilingList.isNotEmpty ||
+          extLightNotifier.extLightList.isNotEmpty || extWallsNotifier.extWallsList.isNotEmpty ||
+          extWindowsNotifier.extWindowsList.isNotEmpty || extFramePhNotifier.extFramePhList.isNotEmpty ||
+          extExdoorPhNotifier.extExdoorPhList.isNotEmpty || extIndoorPhNotifier.extIndoorPhList.isNotEmpty ||
+          extCeilingPhNotifier.extCeilingPhList.isNotEmpty || extLightPhNotifier.extLightPhList.isNotEmpty ||
+          extWallsPhNotifier.extWallsPhList.isNotEmpty || extWindowsPhNotifier.extWindowsPhList.isNotEmpty*/
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkHallway(){
+      if(halFrameNotifier.halFrameList.isNotEmpty || halExdoorNotifier.halExdoorList.isNotEmpty ||
+          halIndoorNotifier.halIndoorList.isNotEmpty || halCeilingNotifier.halCeilingList.isNotEmpty ||
+          halLightNotifier.halLightList.isNotEmpty || halWallsNotifier.halWallsList.isNotEmpty ||
+          halWindowsNotifier.halWindowsList.isNotEmpty || halFramePhNotifier.halFramePhList.isNotEmpty ||
+          halExdoorPhNotifier.halExdoorPhList.isNotEmpty || halIndoorPhNotifier.halIndoorPhList.isNotEmpty ||
+          halCeilingPhNotifier.halCeilingPhList.isNotEmpty || halLightPhNotifier.halLightPhList.isNotEmpty ||
+          halWallsPhNotifier.halWallsPhList.isNotEmpty || halWindowsPhNotifier.halWindowsPhList.isNotEmpty
 
-    ExteriorImgTanNotifier exteriorImgTanNotifier =
-        Provider.of<ExteriorImgTanNotifier>(context);
-    HallwayImgTanNotify hallwayImgTanNotify =
-        Provider.of<HallwayImgTanNotify>(context);
-    SmoteImgTanNotify smoteImgTanNotify =
-        Provider.of<SmoteImgTanNotify>(context);
-    KitchenImgTanNotify kitchenImgTanNotify =
-        Provider.of<KitchenImgTanNotify>(context);
-    BedroomImgTanNotify bedroomImgTanNotify =
-        Provider.of<BedroomImgTanNotify>(context);
-    ChaabiImgTanNotify chaabiImgTanNotify =
-        Provider.of<ChaabiImgTanNotify>(context);
-    MeterImgTanNotify meterImgTanNotify =
-        Provider.of<MeterImgTanNotify>(context);
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkSmote(){
+      if(smokeDeNotifier.smokeDeList.isNotEmpty || smokeDePhNotifier.smokeDePhList.isNotEmpty
+//      smoFrameNotifier.smoFrameList.isNotEmpty || smoExdoorNotifier.smoExdoorList.isNotEmpty ||
+//          smoIndoorNotifier.smoIndoorList.isNotEmpty || smoCeilingNotifier.smoCeilingList.isNotEmpty ||
+//          smoLightNotifier.smoLightList.isNotEmpty || smoWallsNotifier.smoWallsList.isNotEmpty ||
+//          smoWindowsNotifier.smoWindowsList.isNotEmpty || smoFramePhNotifier.smoFramePhList.isNotEmpty ||
+//          smoExdoorPhNotifier.smoExdoorPhList.isNotEmpty || smoIndoorPhNotifier.smoIndoorPhList.isNotEmpty ||
+//          smoCeilingPhNotifier.smoCeilingPhList.isNotEmpty || smoLightPhNotifier.smoLightPhList.isNotEmpty ||
+//          smoWallsPhNotifier.smoWallsPhList.isNotEmpty || smoWindowsPhNotifier.smoWindowsPhList.isNotEmpty
 
-   /* void setValues() async {
-      print('I am null');
-//      var addressp = introNotifier.introList.last.description;
-      var addressp = introImgNotify.introImgList.last.imageintro.path;
-      SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-      sharedPrefs.remove('addressp');
-      sharedPrefs.setString('addressp', addressp);
-      ;
-      print('Values Set in Shared Prefs!!');
-    }*/
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkKitchen(){
+      if(kitFrameNotifier.kitFrameList.isNotEmpty || kitExdoorNotifier.kitExdoorList.isNotEmpty ||
+          kitIndoorNotifier.kitIndoorList.isNotEmpty || kitCeilingNotifier.kitCeilingList.isNotEmpty ||
+          kitLightNotifier.kitLightList.isNotEmpty || kitWallsNotifier.kitWallsList.isNotEmpty ||
+          kitWindowsNotifier.kitWindowsList.isNotEmpty || kitFramePhNotifier.kitFramePhList.isNotEmpty ||
+          kitExdoorPhNotifier.kitExdoorPhList.isNotEmpty || kitIndoorPhNotifier.kitIndoorPhList.isNotEmpty ||
+          kitCeilingPhNotifier.kitCeilingPhList.isNotEmpty || kitLightPhNotifier.kitLightPhList.isNotEmpty ||
+          kitWallsPhNotifier.kitWallsPhList.isNotEmpty || kitWindowsPhNotifier.kitWindowsPhList.isNotEmpty
+
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkBedroom(){
+      if(bedFrameNotifier.bedFrameList.isNotEmpty || bedExdoorNotifier.bedExdoorList.isNotEmpty ||
+          bedIndoorNotifier.bedIndoorList.isNotEmpty || bedCeilingNotifier.bedCeilingList.isNotEmpty ||
+          bedLightNotifier.bedLightList.isNotEmpty || bedWallsNotifier.bedWallsList.isNotEmpty ||
+          bedWindowsNotifier.bedWindowsList.isNotEmpty || bedFramePhNotifier.bedFramePhList.isNotEmpty ||
+          bedExdoorPhNotifier.bedExdoorPhList.isNotEmpty || bedIndoorPhNotifier.bedIndoorPhList.isNotEmpty ||
+          bedCeilingPhNotifier.bedCeilingPhList.isNotEmpty || bedLightPhNotifier.bedLightPhList.isNotEmpty ||
+          bedWallsPhNotifier.bedWallsPhList.isNotEmpty || bedWindowsPhNotifier.bedWindowsPhList.isNotEmpty
+
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkMeter(){
+      if(gasMeterNotifier.gasMeterList.isNotEmpty || gasMeterPhNotifier.gasMeterPhList.isNotEmpty ||
+          elecMeterNotifier.elecMeterList.isNotEmpty || elecMeterPhNotifier.elecMeterPhList.isNotEmpty
+      ){
+        return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+    _checkkeys(){
+      if(inventKeyNotifier.inventKeyList.isNotEmpty || inventKeyPhNotifier.inventKeyPhList.isNotEmpty
+      ){ return Container( alignment: Alignment.centerRight,child: Icon( Icons.done,
+          color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));
+      }else {return Container();}
+    }
+
+    Widget _btnexterior() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.6),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Exterior",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkExterior(),
+          ],
+        ),
+      );
+    }
+    Widget _btnhallway() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Hallway",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkHallway(),
+          ],
+        ),
+      );
+    }
+    Widget _btnsmotedetect() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Smoke Detector",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkSmote(),
+          ],
+        ),
+      );
+    }
+    Widget _btnkitchen() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Kitchen",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkKitchen(),
+          ],
+        ),
+      );
+    }
+    Widget _btnbedroom() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Bedroom 1",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkBedroom(),
+          ],
+        ),
+      );
+    }
+    Widget _btnkeys() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Keys",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkkeys(),
+          ],
+        ),
+      );
+    }
+    Widget _btnmeter() {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+              bottomLeft: const Radius.circular(25.0),
+              bottomRight: const Radius.circular(25.0)),
+          color: Colors.white.withOpacity(0.7),
+          border: new Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              offset: Offset(5, 5),
+            ),
+          ],
+        ),
+        height: 55,
+        width: 240,
+        child: Stack(
+          children: <Widget>[
+            Center(
+                child: Text(
+                  "Meter readings",
+                  style: TextStyle(
+                    color: Color(0xff684c4c),
+                    fontFamily: 'alice',
+                    fontSize: 25,
+                  ),
+                )),
+            _checkMeter(),
+
+          ],
+        ),
+      );
+    }
+
+
+
+
 
     writeOnPdfCover() async {
       if (introNotifier.introList.isNotEmpty) {
@@ -362,7 +498,7 @@ class NewInventory extends StatelessWidget {
                     top: 10,
                   ),
                   child: pw.Row(children: <pw.Widget>[
-                    pw.Text('Check Inventory',
+                    pw.Text('    Check Inventory',
                         style: pw.TextStyle(
                           font: herrvon,
                           fontSize: 50.0,
@@ -480,102 +616,63 @@ class NewInventory extends StatelessWidget {
                                     .readAsBytesSync()),
                             height: 450,
                             width: 750,
-                            fit: pw.BoxFit.cover,
+                            fit: pw.BoxFit.fill,
                           ),
 
-/*      pw.Row(children: <pw.Widget>[
-        pw.Container(child:pw.Text('Description'),width:270, height:600,decoration: pw.BoxDecoration(color:PdfColor.fromInt(0xfff3ded4  )),),
-        pw.Container(height:600, width:850,child:
-        pw.GridView(crossAxisCount: 2,childAspectRatio: 1.5, children: List<pw.Widget>.generate(
-          exteriorImgNotifier.exteriorImgList.length,
-              (int n){
-            var imag = PdfImage.file(
-              pdf.document,
-              bytes: File(exteriorImgNotifier
-                  .exteriorImgList[n].imagesfloor.path)
-                  .readAsBytesSync(),
-            );
-            return pw.Container(
-
-                child: pw.Image(imag, height: 280, width: 400,fit:pw.BoxFit.cover));
-          },
-        ),),),
-      ])*/
                         ]),
                   ),
                 )
               ]),
-
-//              pw.Header(level:0,
-//                  child:pw.Row(children: <pw.Widget>[
-//                    pw.Text('sdfkajsldkj'),
-//
-//                    pw.Container(child:pw.Image(_logol,height:55,width:100,fit: pw.BoxFit.fill,),),pw.SizedBox(width: 190,),
-//
-//                    pw.UrlLink(destination: 'https://www.eutopianlettings.co.uk', child:pw.Container( child:pw.Image(_logor,fit: pw.BoxFit.fill, height: 55,width: 100,)),),
-//              ])),
-//
-////              pw.Header(level:0, child: pw.Text('Inventory Check PDF: ${pdffilename}')),
-//              pw.Text('Address: ${introNotifier.introList.last.description}',style:pw.TextStyle(fontSize: 18,) ,),
-//              pw.Text('Reference: ${introNotifier.introList.last.quantity}',style:pw.TextStyle(fontSize: 18,) ,),
-//              pw.Text('Date: ${introNotifier.introList.last.colour}',style:pw.TextStyle(fontSize: 18,) ,),
-////              pw.Container(height: 50,width: 100,),
-//              pw.SizedBox(height:50,),
-//              pw.Center(child:
-//              pw.Image(PdfImage.file(pdf.document, bytes: File(introImgNotify.introImgList.last.imageintro.path).readAsBytesSync(),),height: 100,width: 100,)
-//              ),
             ];
           },
         ));
       }
 
-      /*  if (introImgNotify.introImgList.isNotEmpty){
 
-        int i=0;
-        while(i < exteriorImgNotifier.exteriorImgList.length){
-          var imag = PdfImage.file(
-            pdf.document,
-            bytes: File(exteriorImgNotifier.exteriorImgList[i].imagesfloor.path).readAsBytesSync(),
-          );
-          i++;
-          var myTheme = pw.Theme.withFont(
-            base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-          );
-
-          pdf.addPage(pw.MultiPage(
-            theme: myTheme,
-            pageFormat: PdfPageFormat.a5,
-            margin: pw.EdgeInsets.all(32),
-            build: (pw.Context context) {
-              return <pw.Widget>[
-                pw.Header(level: 0, child: pw.Text("Exterio Images")),
-                pw.Container(height: 700,width: 600,
-                  child: pw.Image(imag),),
-              ];
-            },
-          ));
-        }
-
-      }*/
     }
 
     writeOnPdfContent() async {
       List content = [];
-      if(introNotifier.introList.isNotEmpty || introImgNotify.introImgList.isNotEmpty){content.add('Index');content.add('Prefix');}
-      if (exteriorNotifier.exteriorList.isNotEmpty || exteriorImgNotifier.exteriorImgList.isNotEmpty) { content.add('Exterior Walls'); }
-      if (exteriorTanNotifier.exteriortanList.isNotEmpty || exteriorImgTanNotifier.exteriorImgTanList.isNotEmpty) {content.add('Exterior Windows'); }
-      if (hallwayNotifier.hallwayList.isNotEmpty || hallwayImgNotify.hallwayImgList.isNotEmpty) { content.add('Hallway Doors');}
-      if (hallwayTanNotifier.hallwayTanList.isNotEmpty || hallwayImgTanNotify.hallwayImgTanList.isNotEmpty) {content.add('Hallway Furniture'); }
-      if (smoteNotifier.smoteList.isNotEmpty || smoteImgNotify.smoteImgList.isNotEmpty) {content.add('Smote Detector & Sockets'); }
-      if (smoteTanNotifier.smoteTanList.isNotEmpty || smoteImgTanNotify.smoteImgTanList.isNotEmpty) {content.add('Switches & Sockets'); }
-      if (kitchenNotifier.kitchenList.isNotEmpty || kitchenImgNotify.kitchenImgList.isNotEmpty) { content.add('Kitchen Interior');}
-      if (kitchenTanNotifier.kitchenTanList.isNotEmpty || kitchenImgTanNotify.kitchenImgTanList.isNotEmpty) { content.add('Kitchen Skirting');}
-      if (bedroomNotifier.bedroomList.isNotEmpty || bedroomImgNotify.bedroomImgList.isNotEmpty) { content.add('BedRoom Flooring'); }
-      if (bedroomTanNotifier.bedroomTanList.isNotEmpty || bedroomImgTanNotify.bedroomImgTanList.isNotEmpty) { content.add('Bedroom Interior'); }
-      if (chaabiNotifier.chaabiList.isNotEmpty || chaabiImgNotify.chaabiImgList.isNotEmpty) { content.add('Keys'); }
-      if (chaabiTanNotifier.chaabiTanList.isNotEmpty || chaabiImgTanNotify.chaabiImgTanList.isNotEmpty) { content.add('Locks'); }
-      if (meterreadingNotifier.meterreadingList.isNotEmpty || meterImgNotify.meterImgList.isNotEmpty) { content.add('Gas Meter'); }
-      if (meterreadingTanNotifier.meterreadingTanList.isNotEmpty || meterImgTanNotify.meterImgTanList.isNotEmpty) { content.add('Electric Meter'); }
+      if(introNotifier.introList.isNotEmpty || introImgNotify.introImgList.isNotEmpty     ){content.add('EXTERIOR');}
+      if (inventKeyNotifier.inventKeyList.isNotEmpty || inventKeyPhNotifier.inventKeyPhList.isNotEmpty) { content.add('KEYS '); }
+      if (elecMeterNotifier.elecMeterList.isNotEmpty || elecMeterPhNotifier.elecMeterPhList.isNotEmpty ||
+              gasMeterNotifier.gasMeterList.isNotEmpty || gasMeterPhNotifier.gasMeterPhList.isNotEmpty) { content.add('METER READING'); }
+      if (smokeDeNotifier.smokeDeList.isNotEmpty || smokeDePhNotifier.smokeDePhList.isNotEmpty) { content.add('SMOKE DETECTOR'); }
+
+      if (kitFrameNotifier.kitFrameList.isNotEmpty || kitFramePhNotifier.kitFramePhList.isNotEmpty || kitExdoorNotifier.kitExdoorList.isNotEmpty ||
+          kitExdoorPhNotifier.kitExdoorPhList.isNotEmpty || kitIndoorNotifier.kitIndoorList.isNotEmpty || kitIndoorPhNotifier.kitIndoorPhList.isNotEmpty ||
+      kitCeilingNotifier.kitCeilingList.isNotEmpty || kitCeilingPhNotifier.kitCeilingPhList.isNotEmpty || kitLightNotifier.kitLightList.isNotEmpty ||
+          kitLightPhNotifier.kitLightPhList.isNotEmpty || kitWallsNotifier.kitWallsList.isNotEmpty || kitWallsPhNotifier.kitWallsPhList.isNotEmpty ||
+          kitWindowsNotifier.kitWindowsList.isNotEmpty || kitWindowsPhNotifier.kitWindowsPhList.isNotEmpty ) { content.add('KITCHEN'); }
+
+
+     /* if (extFrameNotifier.extFrameList.isNotEmpty || extFramePhNotifier.extFramePhList.isNotEmpty) { content.add('Exterior Frames'); }
+      if (extExdoorNotifier.extExdoorList.isNotEmpty || extExdoorPhNotifier.extExdoorPhList.isNotEmpty) {content.add('Exterior Doors'); }
+      if (extIndoorNotifier.extIndoorList.isNotEmpty || extIndoorPhNotifier.extIndoorPhList.isNotEmpty) { content.add('Interior Doors');}
+      if (extCeilingNotifier.extCeilingList.isNotEmpty || extCeilingPhNotifier.extCeilingPhList.isNotEmpty) {content.add('Exterior Ceiling'); }
+      if (extLightNotifier.extLightList.isNotEmpty || extLightPhNotifier.extLightPhList.isNotEmpty) {content.add('Exterior Lights'); }
+      if (extWallsNotifier.extWallsList.isNotEmpty || extWallsPhNotifier.extWallsPhList.isNotEmpty) {content.add('Exterior Walls'); }
+      if (extWindowsNotifier.extWindowsList.isNotEmpty || extWindowsPhNotifier.extWindowsPhList.isNotEmpty) { content.add('Exterior Windows');}
+        if (smoFrameNotifier.smoFrameList.isNotEmpty || smoFramePhNotifier.smoFramePhList.isNotEmpty) { content.add('Smote Detecor Frame '); }
+      if ( smoExdoorNotifier.smoExdoorList.isNotEmpty || smoExdoorPhNotifier.smoExdoorPhList.isNotEmpty) { content.add('Smote Detecor Door '); }
+      if (smoIndoorNotifier.smoIndoorList.isNotEmpty || smoIndoorPhNotifier.smoIndoorPhList.isNotEmpty) { content.add('Smote Detecor Interior '); }
+      if ( smoCeilingNotifier.smoCeilingList.isNotEmpty || smoCeilingPhNotifier.smoCeilingPhList.isNotEmpty) { content.add('Smote Detecor Ceiling '); }
+      if ( smoLightNotifier.smoLightList.isNotEmpty || smoLightPhNotifier.smoLightPhList.isNotEmpty) { content.add('Smote Detecor Lights '); }
+      if (smoWallsNotifier.smoWallsList.isNotEmpty || smoWallsPhNotifier.smoWallsPhList.isNotEmpty) { content.add('Smote Detecor Walls '); }
+      if (smoWindowsNotifier.smoWindowsList.isNotEmpty || smoWindowsPhNotifier.smoWindowsPhList.isNotEmpty) { content.add('Smote Detecor Windows '); }
+      */
+      if (halFrameNotifier.halFrameList.isNotEmpty || halFramePhNotifier.halFramePhList.isNotEmpty || halExdoorNotifier.halExdoorList.isNotEmpty ||
+          halExdoorPhNotifier.halExdoorPhList.isNotEmpty || halIndoorNotifier.halIndoorList.isNotEmpty || halIndoorPhNotifier.halIndoorPhList.isNotEmpty ||
+          halCeilingNotifier.halCeilingList.isNotEmpty || halCeilingPhNotifier.halCeilingPhList.isNotEmpty || halLightNotifier.halLightList.isNotEmpty ||
+          halLightPhNotifier.halLightPhList.isNotEmpty || halWallsNotifier.halWallsList.isNotEmpty || halWallsPhNotifier.halWallsPhList.isNotEmpty ||
+          halWindowsNotifier.halWindowsList.isNotEmpty || halWindowsPhNotifier.halWindowsPhList.isNotEmpty ) { content.add('HALLWAYS');}
+
+
+      if (bedFrameNotifier.bedFrameList.isNotEmpty || bedFramePhNotifier.bedFramePhList.isNotEmpty || bedExdoorNotifier.bedExdoorList.isNotEmpty ||
+          bedExdoorPhNotifier.bedExdoorPhList.isNotEmpty || bedIndoorNotifier.bedIndoorList.isNotEmpty || bedIndoorPhNotifier.bedIndoorPhList.isNotEmpty ||
+          bedCeilingNotifier.bedCeilingList.isNotEmpty || bedCeilingPhNotifier.bedCeilingPhList.isNotEmpty || bedLightNotifier.bedLightList.isNotEmpty ||
+          bedLightPhNotifier.bedLightPhList.isNotEmpty || bedWallsNotifier.bedWallsList.isNotEmpty || bedWallsPhNotifier.bedWallsPhList.isNotEmpty ||
+          bedWindowsNotifier.bedWindowsList.isNotEmpty || bedWindowsPhNotifier.bedWindowsPhList.isNotEmpty   ) { content.add('BEDROOMS '); }
 
       final font = await rootBundle.load("assets/herrvon.ttf");      final herrvon = pw.Font.ttf(font);
       final fonta = await rootBundle.load("assets/alive.ttf");      final alice = pw.Font.ttf(fonta);
@@ -589,7 +686,7 @@ class NewInventory extends StatelessWidget {
           return <pw.Widget>[ pw.Stack(children: <pw.Widget>[
               pw.Container( child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover), ),
               pw.Container( padding: pw.EdgeInsets.only(top: 10,),child: pw.Row(children: <pw.Widget>[
-                  pw.Text('Check Inventory', style: pw.TextStyle(font: herrvon,fontSize: 50.0,)), pw.SizedBox(width: 750,                  ),
+                  pw.Text('    Check Inventory', style: pw.TextStyle(font: herrvon,fontSize: 50.0,)), pw.SizedBox(width: 750,                  ),
                   pw.Column(children: <pw.Widget>[
                     pw.Text('POWERED BY'),pw.UrlLink( destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'),),])]),
               ),
@@ -601,7 +698,6 @@ class NewInventory extends StatelessWidget {
                       mainAxisAlignment: pw.MainAxisAlignment.start,
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: <pw.Widget>[
-//      pw.SizedBox(height:100,),
                         pw.Column(
                             mainAxisAlignment: pw.MainAxisAlignment.start,
                             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -620,19 +716,16 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
           separatorBuilder: (_, int index) => pw.Divider(),
           itemCount:content.length,
           itemBuilder:(_, int index){return pw.Text(content[index],style:pw.TextStyle(fontSize:20,),textAlign: pw.TextAlign.left);})
-      ,]),pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start,
+      ,]),/*pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start,
     crossAxisAlignment: pw.CrossAxisAlignment.start,children:<pw.Widget>[
       pw.ListView.separated(
           separatorBuilder: (_, int index) => pw.Divider(),
           itemCount:content.length,
           itemBuilder:(_, int index){
-            return pw.Row(children:<pw.Widget>[pw.Text('.......     Page -'), pw.Text('${index+1}',style:pw.TextStyle(fontSize:20,))]);
+            return pw.Row(children:<pw.Widget>[pw.Text(index), *//*pw.Text('.......     Page -'), pw.Text('${index+1}',style:pw.TextStyle(fontSize:20,))*//*]);
           }
       )
-      ,]),]),),),
-
-
-
+      ,])*/]),),),
                               pw.SizedBox(
                                 height: 10,
                               ),
@@ -650,2705 +743,1115 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
     }
 
     writeOnPdfExterior() async {
-      if (exteriorNotifier.exteriorList.isNotEmpty ||
-          exteriorImgNotifier.exteriorImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${exteriorNotifier.exteriorList.isNotEmpty ? exteriorNotifier.exteriorList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${exteriorNotifier.exteriorList.isNotEmpty ? exteriorNotifier.exteriorList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${exteriorNotifier.exteriorList.isNotEmpty ? exteriorNotifier.exteriorList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${exteriorNotifier.exteriorList.isNotEmpty ? exteriorNotifier.exteriorList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      exteriorImgNotifier
-                                          .exteriorImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(exteriorImgNotifier
-                                                  .exteriorImgList[n]
-                                                  .imagesfloor
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      } //ifelse
-      if (exteriorTanNotifier.exteriortanList.isNotEmpty ||
-          exteriorImgTanNotifier.exteriorImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${exteriorTanNotifier.exteriortanList.isNotEmpty ? exteriorTanNotifier.exteriortanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${exteriorTanNotifier.exteriortanList.isNotEmpty ? exteriorTanNotifier.exteriortanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${exteriorTanNotifier.exteriortanList.isNotEmpty ? exteriorTanNotifier.exteriortanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${exteriorTanNotifier.exteriortanList.isNotEmpty ? exteriorTanNotifier.exteriortanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      exteriorImgTanNotifier
-                                          .exteriorImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(exteriorImgTanNotifier
-                                                  .exteriorImgTanList[n]
-                                                  .imagesfloortan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+      if (extFrameNotifier.extFrameList.isNotEmpty || extFramePhNotifier.extFramePhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+                pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+                          font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+                  destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                    padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                          (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                            pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                                    child: pw.Text('  Exterior Frame : ',
+                                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                                        '  Quanity: ${extFrameNotifier.extFrameList.isNotEmpty ? extFrameNotifier.extFrameList.last.quantity : ' NA'}',
+                                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                                        '  Colour: ${extFrameNotifier.extFrameList.isNotEmpty ? extFrameNotifier.extFrameList.last.colour : ' NA'}',
+                                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                                        '  Cleanliness: ${extFrameNotifier.extFrameList.isNotEmpty ? extFrameNotifier.extFrameList.last.condition : ' NA'}',
+                                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                            child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                              child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                                '  Description : ${extFrameNotifier.extFrameList.isNotEmpty ? extFrameNotifier.extFrameList.last.description : '  NA'}',
+                                    style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                                pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                                      extFramePhNotifier.extFramePhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                                    extFramePhNotifier.extFramePhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                                                width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); } //ifelse
+      if (extExdoorNotifier.extExdoorList.isNotEmpty || extExdoorPhNotifier.extExdoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Door: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extExdoorNotifier.extExdoorList.isNotEmpty ? extExdoorNotifier.extExdoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extExdoorNotifier.extExdoorList.isNotEmpty ? extExdoorNotifier.extExdoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extExdoorNotifier.extExdoorList.isNotEmpty ? extExdoorNotifier.extExdoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extExdoorNotifier.extExdoorList.isNotEmpty ? extExdoorNotifier.extExdoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extExdoorPhNotifier.extExdoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extExdoorPhNotifier.extExdoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (extIndoorNotifier.extIndoorList.isNotEmpty || extIndoorPhNotifier.extIndoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Interior Door: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extIndoorNotifier.extIndoorList.isNotEmpty ? extIndoorNotifier.extIndoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extIndoorNotifier.extIndoorList.isNotEmpty ? extIndoorNotifier.extIndoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extIndoorNotifier.extIndoorList.isNotEmpty ? extIndoorNotifier.extIndoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extIndoorNotifier.extIndoorList.isNotEmpty ? extIndoorNotifier.extIndoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extIndoorPhNotifier.extIndoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extIndoorPhNotifier.extIndoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (extCeilingNotifier.extCeilingList.isNotEmpty || extCeilingPhNotifier.extCeilingPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Ceiling: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extCeilingNotifier.extCeilingList.isNotEmpty ? extCeilingNotifier.extCeilingList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extCeilingNotifier.extCeilingList.isNotEmpty ? extCeilingNotifier.extCeilingList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extCeilingNotifier.extCeilingList.isNotEmpty ? extCeilingNotifier.extCeilingList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extCeilingNotifier.extCeilingList.isNotEmpty ? extCeilingNotifier.extCeilingList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extCeilingPhNotifier.extCeilingPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extCeilingPhNotifier.extCeilingPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (extLightNotifier.extLightList.isNotEmpty || extLightPhNotifier.extLightPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Light: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extLightNotifier.extLightList.isNotEmpty ? extLightNotifier.extLightList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extLightNotifier.extLightList.isNotEmpty ? extLightNotifier.extLightList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extLightNotifier.extLightList.isNotEmpty ? extLightNotifier.extLightList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extLightNotifier.extLightList.isNotEmpty ? extLightNotifier.extLightList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extLightPhNotifier.extLightPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extLightPhNotifier.extLightPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (extWallsNotifier.extWallsList.isNotEmpty || extWallsPhNotifier.extWallsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Walls: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extWallsNotifier.extWallsList.isNotEmpty ? extWallsNotifier.extWallsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extWallsNotifier.extWallsList.isNotEmpty ? extWallsNotifier.extWallsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extWallsNotifier.extWallsList.isNotEmpty ? extWallsNotifier.extWallsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extWallsNotifier.extWallsList.isNotEmpty ? extWallsNotifier.extWallsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extWallsPhNotifier.extWallsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extWallsPhNotifier.extWallsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (extWindowsNotifier.extWindowsList.isNotEmpty || extWindowsPhNotifier.extWindowsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 100),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Exterior Windows: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${extWindowsNotifier.extWindowsList.isNotEmpty ? extWindowsNotifier.extWindowsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${extWindowsNotifier.extWindowsList.isNotEmpty ? extWindowsNotifier.extWindowsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${extWindowsNotifier.extWindowsList.isNotEmpty ? extWindowsNotifier.extWindowsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${extWindowsNotifier.extWindowsList.isNotEmpty ? extWindowsNotifier.extWindowsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        extWindowsPhNotifier.extWindowsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          extWindowsPhNotifier.extWindowsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
     }
 
     writeOnPdfHallway() async {
-      if (hallwayNotifier.hallwayList.isNotEmpty ||
-          hallwayImgNotify.hallwayImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
+      if (halFrameNotifier.halFrameList.isNotEmpty || halFramePhNotifier.halFramePhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  HALLWAYS DOORS & FRAME: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halFrameNotifier.halFrameList.isNotEmpty ? halFrameNotifier.halFrameList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halFrameNotifier.halFrameList.isNotEmpty ? halFrameNotifier.halFrameList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halFrameNotifier.halFrameList.isNotEmpty ? halFrameNotifier.halFrameList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halFrameNotifier.halFrameList.isNotEmpty ? halFrameNotifier.halFrameList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halFramePhNotifier.halFramePhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halFramePhNotifier.halFramePhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (halExdoorNotifier.halExdoorList.isNotEmpty || halExdoorPhNotifier.halExdoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  HALLWAY DOOR EXTERIOR: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halExdoorNotifier.halExdoorList.isNotEmpty ? halExdoorNotifier.halExdoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halExdoorNotifier.halExdoorList.isNotEmpty ? halExdoorNotifier.halExdoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halExdoorNotifier.halExdoorList.isNotEmpty ? halExdoorNotifier.halExdoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halExdoorNotifier.halExdoorList.isNotEmpty ? halExdoorNotifier.halExdoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halExdoorPhNotifier.halExdoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halExdoorPhNotifier.halExdoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
 
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${hallwayNotifier.hallwayList.isNotEmpty ? hallwayNotifier.hallwayList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${hallwayNotifier.hallwayList.isNotEmpty ? hallwayNotifier.hallwayList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${hallwayNotifier.hallwayList.isNotEmpty ? hallwayNotifier.hallwayList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${hallwayNotifier.hallwayList.isNotEmpty ? hallwayNotifier.hallwayList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      hallwayImgNotify.hallwayImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(hallwayImgNotify
-                                                  .hallwayImgList[n]
-                                                  .imagehallway
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-      if (hallwayTanNotifier.hallwayTanList.isNotEmpty ||
-          hallwayImgTanNotify.hallwayImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
+      if (halIndoorNotifier.halIndoorList.isNotEmpty || halIndoorPhNotifier.halIndoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Hallway Interior Door: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halIndoorNotifier.halIndoorList.isNotEmpty ? halIndoorNotifier.halIndoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halIndoorNotifier.halIndoorList.isNotEmpty ? halIndoorNotifier.halIndoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halIndoorNotifier.halIndoorList.isNotEmpty ? halIndoorNotifier.halIndoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halIndoorNotifier.halIndoorList.isNotEmpty ? halIndoorNotifier.halIndoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halIndoorPhNotifier.halIndoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halIndoorPhNotifier.halIndoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (halCeilingNotifier.halCeilingList.isNotEmpty || halCeilingPhNotifier.halCeilingPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Hallway Ceiling: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halCeilingNotifier.halCeilingList.isNotEmpty ? halCeilingNotifier.halCeilingList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halCeilingNotifier.halCeilingList.isNotEmpty ? halCeilingNotifier.halCeilingList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halCeilingNotifier.halCeilingList.isNotEmpty ? halCeilingNotifier.halCeilingList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halCeilingNotifier.halCeilingList.isNotEmpty ? halCeilingNotifier.halCeilingList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halCeilingPhNotifier.halCeilingPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halCeilingPhNotifier.halCeilingPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
 
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${hallwayTanNotifier.hallwayTanList.isNotEmpty ? hallwayTanNotifier.hallwayTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${hallwayTanNotifier.hallwayTanList.isNotEmpty ? hallwayTanNotifier.hallwayTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${hallwayTanNotifier.hallwayTanList.isNotEmpty ? hallwayTanNotifier.hallwayTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${hallwayTanNotifier.hallwayTanList.isNotEmpty ? hallwayTanNotifier.hallwayTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      hallwayImgTanNotify
-                                          .hallwayImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(hallwayImgTanNotify
-                                                  .hallwayImgTanList[n]
-                                                  .imagehallwaytan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+
+
+      if (halLightNotifier.halLightList.isNotEmpty || halLightPhNotifier.halLightPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Hallway Light: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halLightNotifier.halLightList.isNotEmpty ? halLightNotifier.halLightList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halLightNotifier.halLightList.isNotEmpty ? halLightNotifier.halLightList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halLightNotifier.halLightList.isNotEmpty ? halLightNotifier.halLightList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halLightNotifier.halLightList.isNotEmpty ? halLightNotifier.halLightList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halLightPhNotifier.halLightPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halLightPhNotifier.halLightPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (halWallsNotifier.halWallsList.isNotEmpty || halWallsPhNotifier.halWallsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Hallway Walls: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halWallsNotifier.halWallsList.isNotEmpty ? halWallsNotifier.halWallsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halWallsNotifier.halWallsList.isNotEmpty ? halWallsNotifier.halWallsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halWallsNotifier.halWallsList.isNotEmpty ? halWallsNotifier.halWallsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halWallsNotifier.halWallsList.isNotEmpty ? halWallsNotifier.halWallsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halWallsPhNotifier.halWallsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halWallsPhNotifier.halWallsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (halWindowsNotifier.halWindowsList.isNotEmpty || halWindowsPhNotifier.halWindowsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Hallway Windows: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${halWindowsNotifier.halWindowsList.isNotEmpty ? halWindowsNotifier.halWindowsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${halWindowsNotifier.halWindowsList.isNotEmpty ? halWindowsNotifier.halWindowsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${halWindowsNotifier.halWindowsList.isNotEmpty ? halWindowsNotifier.halWindowsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${halWindowsNotifier.halWindowsList.isNotEmpty ? halWindowsNotifier.halWindowsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        halWindowsPhNotifier.halWindowsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          halWindowsPhNotifier.halWindowsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+
+
     }
 
     writeOnPdfSmote() async {
-      if (smoteNotifier.smoteList.isNotEmpty ||
-          smoteImgNotify.smoteImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${smoteNotifier.smoteList.isNotEmpty ? smoteNotifier.smoteList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${smoteNotifier.smoteList.isNotEmpty ? smoteNotifier.smoteList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${smoteNotifier.smoteList.isNotEmpty ? smoteNotifier.smoteList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${smoteNotifier.smoteList.isNotEmpty ? smoteNotifier.smoteList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      smoteImgNotify.smoteImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(smoteImgNotify
-                                                  .smoteImgList[n]
-                                                  .imagessmote
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-      if (smoteTanNotifier.smoteTanList.isNotEmpty ||
-          smoteImgTanNotify.smoteImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${smoteTanNotifier.smoteTanList.isNotEmpty ? smoteTanNotifier.smoteTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${smoteTanNotifier.smoteTanList.isNotEmpty ? smoteTanNotifier.smoteTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${smoteTanNotifier.smoteTanList.isNotEmpty ? smoteTanNotifier.smoteTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${smoteTanNotifier.smoteTanList.isNotEmpty ? smoteTanNotifier.smoteTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      smoteImgTanNotify.smoteImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(smoteImgTanNotify
-                                                  .smoteImgTanList[n]
-                                                  .imagessmotetan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+      if (smokeDeNotifier.smokeDeList.isNotEmpty || smokeDePhNotifier.smokeDePhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  SMOKE DETECTOR: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${smokeDeNotifier.smokeDeList.isNotEmpty ? smokeDeNotifier.smokeDeList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ),  ])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Location : ${smokeDeNotifier.smokeDeList.isNotEmpty ? smokeDeNotifier.smokeDeList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        smokeDePhNotifier.smokeDePhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          smokeDePhNotifier.smokeDePhList[n].photo.path).readAsBytesSync(),);return pw.Container(  child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
     }
 
     writeOnPdfKitchen() async {
-      if (kitchenNotifier.kitchenList.isNotEmpty ||
-          kitchenImgNotify.kitchenImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${kitchenNotifier.kitchenList.isNotEmpty ? kitchenNotifier.kitchenList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${kitchenNotifier.kitchenList.isNotEmpty ? kitchenNotifier.kitchenList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${kitchenNotifier.kitchenList.isNotEmpty ? kitchenNotifier.kitchenList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${kitchenNotifier.kitchenList.isNotEmpty ? kitchenNotifier.kitchenList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      kitchenImgNotify.kitchenImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(kitchenImgNotify
-                                                  .kitchenImgList[n]
-                                                  .imagekitchen
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-      if (kitchenTanNotifier.kitchenTanList.isNotEmpty ||
-          kitchenImgTanNotify.kitchenImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${kitchenTanNotifier.kitchenTanList.isNotEmpty ? kitchenTanNotifier.kitchenTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${kitchenTanNotifier.kitchenTanList.isNotEmpty ? kitchenTanNotifier.kitchenTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${kitchenTanNotifier.kitchenTanList.isNotEmpty ? kitchenTanNotifier.kitchenTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${kitchenTanNotifier.kitchenTanList.isNotEmpty ? kitchenTanNotifier.kitchenTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      kitchenImgTanNotify
-                                          .kitchenImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(kitchenImgTanNotify
-                                                  .kitchenImgTanList[n]
-                                                  .imagekitchentan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+      if (kitFrameNotifier.kitFrameList.isNotEmpty || kitFramePhNotifier.kitFramePhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Frames: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitFrameNotifier.kitFrameList.isNotEmpty ? kitFrameNotifier.kitFrameList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitFrameNotifier.kitFrameList.isNotEmpty ? kitFrameNotifier.kitFrameList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitFrameNotifier.kitFrameList.isNotEmpty ? kitFrameNotifier.kitFrameList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitFrameNotifier.kitFrameList.isNotEmpty ? kitFrameNotifier.kitFrameList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitFramePhNotifier.kitFramePhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitFramePhNotifier.kitFramePhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitExdoorNotifier.kitExdoorList.isNotEmpty || kitExdoorPhNotifier.kitExdoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Door: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitExdoorNotifier.kitExdoorList.isNotEmpty ? kitExdoorNotifier.kitExdoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitExdoorNotifier.kitExdoorList.isNotEmpty ? kitExdoorNotifier.kitExdoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitExdoorNotifier.kitExdoorList.isNotEmpty ? kitExdoorNotifier.kitExdoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitExdoorNotifier.kitExdoorList.isNotEmpty ? kitExdoorNotifier.kitExdoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitExdoorPhNotifier.kitExdoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitExdoorPhNotifier.kitExdoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitIndoorNotifier.kitIndoorList.isNotEmpty || kitIndoorPhNotifier.kitIndoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Interior: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitIndoorNotifier.kitIndoorList.isNotEmpty ? kitIndoorNotifier.kitIndoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitIndoorNotifier.kitIndoorList.isNotEmpty ? kitIndoorNotifier.kitIndoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitIndoorNotifier.kitIndoorList.isNotEmpty ? kitIndoorNotifier.kitIndoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitIndoorNotifier.kitIndoorList.isNotEmpty ? kitIndoorNotifier.kitIndoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitIndoorPhNotifier.kitIndoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitIndoorPhNotifier.kitIndoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitCeilingNotifier.kitCeilingList.isNotEmpty || kitCeilingPhNotifier.kitCeilingPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Ceiling: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitCeilingNotifier.kitCeilingList.isNotEmpty ? kitCeilingNotifier.kitCeilingList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitCeilingNotifier.kitCeilingList.isNotEmpty ? kitCeilingNotifier.kitCeilingList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitCeilingNotifier.kitCeilingList.isNotEmpty ? kitCeilingNotifier.kitCeilingList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitCeilingNotifier.kitCeilingList.isNotEmpty ? kitCeilingNotifier.kitCeilingList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitCeilingPhNotifier.kitCeilingPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitCeilingPhNotifier.kitCeilingPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitLightNotifier.kitLightList.isNotEmpty || kitLightPhNotifier.kitLightPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Light: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitLightNotifier.kitLightList.isNotEmpty ? kitLightNotifier.kitLightList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitLightNotifier.kitLightList.isNotEmpty ? kitLightNotifier.kitLightList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitLightNotifier.kitLightList.isNotEmpty ? kitLightNotifier.kitLightList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitLightNotifier.kitLightList.isNotEmpty ? kitLightNotifier.kitLightList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitLightPhNotifier.kitLightPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitLightPhNotifier.kitLightPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitWallsNotifier.kitWallsList.isNotEmpty || kitWallsPhNotifier.kitWallsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Walls: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitWallsNotifier.kitWallsList.isNotEmpty ? kitWallsNotifier.kitWallsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitWallsNotifier.kitWallsList.isNotEmpty ? kitWallsNotifier.kitWallsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitWallsNotifier.kitWallsList.isNotEmpty ? kitWallsNotifier.kitWallsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitWallsNotifier.kitWallsList.isNotEmpty ? kitWallsNotifier.kitWallsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitWallsPhNotifier.kitWallsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitWallsPhNotifier.kitWallsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (kitWindowsNotifier.kitWindowsList.isNotEmpty || kitWindowsPhNotifier.kitWindowsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Kitchen Windows: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${kitWindowsNotifier.kitWindowsList.isNotEmpty ? kitWindowsNotifier.kitWindowsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${kitWindowsNotifier.kitWindowsList.isNotEmpty ? kitWindowsNotifier.kitWindowsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${kitWindowsNotifier.kitWindowsList.isNotEmpty ? kitWindowsNotifier.kitWindowsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${kitWindowsNotifier.kitWindowsList.isNotEmpty ? kitWindowsNotifier.kitWindowsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        kitWindowsPhNotifier.kitWindowsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          kitWindowsPhNotifier.kitWindowsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
     }
 
     writeOnPdfBedroom() async {
-      if (bedroomNotifier.bedroomList.isNotEmpty ||
-          bedroomImgNotify.bedroomImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${bedroomNotifier.bedroomList.isNotEmpty ? bedroomNotifier.bedroomList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${bedroomNotifier.bedroomList.isNotEmpty ? bedroomNotifier.bedroomList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${bedroomNotifier.bedroomList.isNotEmpty ? bedroomNotifier.bedroomList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${bedroomNotifier.bedroomList.isNotEmpty ? bedroomNotifier.bedroomList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      bedroomImgNotify.bedroomImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(bedroomImgNotify
-                                                  .bedroomImgList[n]
-                                                  .imagebedroom
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-      if (bedroomTanNotifier.bedroomTanList.isNotEmpty ||
-          bedroomImgTanNotify.bedroomImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${bedroomTanNotifier.bedroomTanList.isNotEmpty ? bedroomTanNotifier.bedroomTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${bedroomTanNotifier.bedroomTanList.isNotEmpty ? bedroomTanNotifier.bedroomTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${bedroomTanNotifier.bedroomTanList.isNotEmpty ? bedroomTanNotifier.bedroomTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${bedroomTanNotifier.bedroomTanList.isNotEmpty ? bedroomTanNotifier.bedroomTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      bedroomImgTanNotify
-                                          .bedroomImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(bedroomImgTanNotify
-                                                  .bedroomImgTanList[n]
-                                                  .imagebedroomtan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+      if (bedFrameNotifier.bedFrameList.isNotEmpty || bedFramePhNotifier.bedFramePhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Frames: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedFrameNotifier.bedFrameList.isNotEmpty ? bedFrameNotifier.bedFrameList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedFrameNotifier.bedFrameList.isNotEmpty ? bedFrameNotifier.bedFrameList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedFrameNotifier.bedFrameList.isNotEmpty ? bedFrameNotifier.bedFrameList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedFrameNotifier.bedFrameList.isNotEmpty ? bedFrameNotifier.bedFrameList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedFramePhNotifier.bedFramePhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedFramePhNotifier.bedFramePhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedExdoorNotifier.bedExdoorList.isNotEmpty || bedExdoorPhNotifier.bedExdoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Doors: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedExdoorNotifier.bedExdoorList.isNotEmpty ? bedExdoorNotifier.bedExdoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedExdoorNotifier.bedExdoorList.isNotEmpty ? bedExdoorNotifier.bedExdoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedExdoorNotifier.bedExdoorList.isNotEmpty ? bedExdoorNotifier.bedExdoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedExdoorNotifier.bedExdoorList.isNotEmpty ? bedExdoorNotifier.bedExdoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedExdoorPhNotifier.bedExdoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedExdoorPhNotifier.bedExdoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedIndoorNotifier.bedIndoorList.isNotEmpty || bedIndoorPhNotifier.bedIndoorPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Interior: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedIndoorNotifier.bedIndoorList.isNotEmpty ? bedIndoorNotifier.bedIndoorList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedIndoorNotifier.bedIndoorList.isNotEmpty ? bedIndoorNotifier.bedIndoorList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedIndoorNotifier.bedIndoorList.isNotEmpty ? bedIndoorNotifier.bedIndoorList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedIndoorNotifier.bedIndoorList.isNotEmpty ? bedIndoorNotifier.bedIndoorList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedIndoorPhNotifier.bedIndoorPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedIndoorPhNotifier.bedIndoorPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedCeilingNotifier.bedCeilingList.isNotEmpty || bedCeilingPhNotifier.bedCeilingPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Ceiling: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedCeilingNotifier.bedCeilingList.isNotEmpty ? bedCeilingNotifier.bedCeilingList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedCeilingNotifier.bedCeilingList.isNotEmpty ? bedCeilingNotifier.bedCeilingList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedCeilingNotifier.bedCeilingList.isNotEmpty ? bedCeilingNotifier.bedCeilingList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedCeilingNotifier.bedCeilingList.isNotEmpty ? bedCeilingNotifier.bedCeilingList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedCeilingPhNotifier.bedCeilingPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedCeilingPhNotifier.bedCeilingPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedLightNotifier.bedLightList.isNotEmpty || bedLightPhNotifier.bedLightPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Light: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedLightNotifier.bedLightList.isNotEmpty ? bedLightNotifier.bedLightList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedLightNotifier.bedLightList.isNotEmpty ? bedLightNotifier.bedLightList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedLightNotifier.bedLightList.isNotEmpty ? bedLightNotifier.bedLightList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedLightNotifier.bedLightList.isNotEmpty ? bedLightNotifier.bedLightList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedLightPhNotifier.bedLightPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedLightPhNotifier.bedLightPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedWallsNotifier.bedWallsList.isNotEmpty || bedWallsPhNotifier.bedWallsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Walls: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedWallsNotifier.bedWallsList.isNotEmpty ? bedWallsNotifier.bedWallsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedWallsNotifier.bedWallsList.isNotEmpty ? bedWallsNotifier.bedWallsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedWallsNotifier.bedWallsList.isNotEmpty ? bedWallsNotifier.bedWallsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedWallsNotifier.bedWallsList.isNotEmpty ? bedWallsNotifier.bedWallsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedWallsPhNotifier.bedWallsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedWallsPhNotifier.bedWallsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (bedWindowsNotifier.bedWindowsList.isNotEmpty || bedWindowsPhNotifier.bedWindowsPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  Bedroom Windows: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Quanity: ${bedWindowsNotifier.bedWindowsList.isNotEmpty ? bedWindowsNotifier.bedWindowsList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Colour: ${bedWindowsNotifier.bedWindowsList.isNotEmpty ? bedWindowsNotifier.bedWindowsList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Cleanliness: ${bedWindowsNotifier.bedWindowsList.isNotEmpty ? bedWindowsNotifier.bedWindowsList.last.condition : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Description : ${bedWindowsNotifier.bedWindowsList.isNotEmpty ? bedWindowsNotifier.bedWindowsList.last.description : '  NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        bedWindowsPhNotifier.bedWindowsPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          bedWindowsPhNotifier.bedWindowsPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.cover)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
     }
 
     writeOnPdfChaabi() async {
-      if (chaabiNotifier.chaabiList.isNotEmpty ||
-          chaabiImgNotify.chaabiImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${chaabiNotifier.chaabiList.isNotEmpty ? chaabiNotifier.chaabiList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${chaabiNotifier.chaabiList.isNotEmpty ? chaabiNotifier.chaabiList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${chaabiNotifier.chaabiList.isNotEmpty ? chaabiNotifier.chaabiList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${chaabiNotifier.chaabiList.isNotEmpty ? chaabiNotifier.chaabiList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      chaabiImgNotify.chaabiImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(chaabiImgNotify
-                                                  .chaabiImgList[n]
-                                                  .imagechaabi
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
+      if (
+      inventKeyNotifier.inventKeyList.isNotEmpty || inventKeyPhNotifier.inventKeyPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  INVENTORY KEY: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Sets of Keys: ${inventKeyNotifier.inventKeyList.isNotEmpty ? inventKeyNotifier.inventKeyList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Keys in each set: ${inventKeyNotifier.inventKeyList.isNotEmpty ? inventKeyNotifier.inventKeyList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),), pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xffffffff), borderRadius: 6), child: pw.Text(
+                        '    ',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  ',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.Container(padding: pw.EdgeInsets.only(left:50,), child: pw.Image(PdfImage.file( pdf.document, bytes: File(
+                          inventKeyPhNotifier.inventKeyPhList.last.photo.path).readAsBytesSync(),), height: 600,
+                          width: 800, fit: pw.BoxFit.contain)), ), ]), ), ), ])), ]), ]; }, )); }
       }
-      if (chaabiTanNotifier.chaabiTanList.isNotEmpty ||
-          chaabiImgTanNotify.chaabiImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${chaabiTanNotifier.chaabiTanList.isNotEmpty ? chaabiTanNotifier.chaabiTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${chaabiTanNotifier.chaabiTanList.isNotEmpty ? chaabiTanNotifier.chaabiTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${chaabiTanNotifier.chaabiTanList.isNotEmpty ? chaabiTanNotifier.chaabiTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${chaabiTanNotifier.chaabiTanList.isNotEmpty ? chaabiTanNotifier.chaabiTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      chaabiImgTanNotify
-                                          .chaabiImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(chaabiImgTanNotify
-                                                  .chaabiImgTanList[n]
-                                                  .imagechaabitan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-    }
 
     writeOnPdfMeter() async {
-      if (meterreadingNotifier.meterreadingList.isNotEmpty ||
-          meterImgNotify.meterImgList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${meterreadingNotifier.meterreadingList.isNotEmpty ? meterreadingNotifier.meterreadingList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${meterreadingNotifier.meterreadingList.isNotEmpty ? meterreadingNotifier.meterreadingList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${meterreadingNotifier.meterreadingList.isNotEmpty ? meterreadingNotifier.meterreadingList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${meterreadingNotifier.meterreadingList.isNotEmpty ? meterreadingNotifier.meterreadingList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      meterImgNotify.meterImgList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(meterImgNotify
-                                                  .meterImgList[n]
-                                                  .imagemeter
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
-      if (meterreadingTanNotifier.meterreadingTanList.isNotEmpty ||
-          meterImgTanNotify.meterImgTanList.isNotEmpty) {
-        final font = await rootBundle.load("assets/herrvon.ttf");
-        final herrvon = pw.Font.ttf(font);
-        final fonta = await rootBundle.load("assets/alive.ttf");
-        final alice = pw.Font.ttf(fonta);
-        final fontb = await rootBundle.load("assets/arimo.ttf");
-        final arimo = pw.Font.ttf(fontb);
-        var pwtheme = pw.Theme.withFont(
-          base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),
-        );
-
-        PdfImage _bgm;
-        _bgm = PdfImage.file(
-          pdf.document,
-          bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(),
-        );
-        pdf.addPage(pw.MultiPage(
-          theme: pwtheme,
-          pageFormat: PdfPageFormat.a3.landscape,
-          margin: pw.EdgeInsets.all(1),
-          build: (pw.Context context) {
-            return <pw.Widget>[
-              pw.Stack(children: <pw.Widget>[
-                pw.Container(
-                  child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),
-                ),
-                pw.Container(
-                  padding: pw.EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: pw.Row(children: <pw.Widget>[
-                    pw.Text('    Check Inventory',
-                        style: pw.TextStyle(
-                          font: herrvon,
-                          fontSize: 50.0,
-                        )),
-                    pw.SizedBox(
-                      width: 750,
-                    ),
-                    pw.Column(children: <pw.Widget>[
-                      pw.Text('POWERED BY'),
-                      pw.UrlLink(
-                        destination: 'https://www.eutopianlettings.co.uk',
-                        child: pw.Text('EUTOPIANLETTINGS.CO.UK'),
-                      ),
-                    ])
-                  ]),
-                ),
-                pw.Container(
-                    padding: pw.EdgeInsets.only(top: 100),
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: <pw.Widget>[
-//                            pw.SizedBox(height:100,),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(
-                              left: 20,
-                            ),
-                            child: pw.Container(
-                                padding: pw.EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                decoration: pw.BoxDecoration(
-                                  color: PdfColor.fromInt(0xffffffff),
-                                ),
-                                height: 40,
-                                width: 1145,
-                                child: pw.Row(children: <pw.Widget>[
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xffc7d0d8),
-                                        borderRadius: 6),
-                                    child: pw.Text('  Exterior Walls: ',
-                                        style: pw.TextStyle(
-                                            font: alice, fontSize: 22)),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Quanity: ${meterreadingTanNotifier.meterreadingTanList.isNotEmpty ? meterreadingTanNotifier.meterreadingTanList.last.quantity : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Colour: ${meterreadingTanNotifier.meterreadingTanList.isNotEmpty ? meterreadingTanNotifier.meterreadingTanList.last.colour : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                  pw.SizedBox(
-                                    width: 15,
-                                  ),
-                                  pw.Container(
-                                    height: 35,
-                                    width: 270,
-                                    decoration: const pw.BoxDecoration(
-                                        color: PdfColor.fromInt(0xfff3ded4),
-                                        borderRadius: 6),
-                                    child: pw.Text(
-                                        '  Cleanliness: ${meterreadingTanNotifier.meterreadingTanList.isNotEmpty ? meterreadingTanNotifier.meterreadingTanList.last.condition : ' NA'}',
-                                        style: pw.TextStyle(
-                                          font: alice,
-                                          fontSize: 20,
-                                        )),
-                                  ),
-                                ])),
-                          ),
-                          pw.Container(
-                            padding: pw.EdgeInsets.only(left: 20),
-                            child: pw.Container(
-                              decoration: pw.BoxDecoration(
-                                color: PdfColor.fromInt(0xffffffff),
-                              ),
-                              width: 1145,
-                              padding: pw.EdgeInsets.only(left: 8),
-                              child: pw.Row(children: <pw.Widget>[
-                                pw.SizedBox(
-                                  width: 5,
-                                ),
-                                pw.Container(
-                                  child: pw.Text(
-                                    '  Description : ${meterreadingTanNotifier.meterreadingTanList.isNotEmpty ? meterreadingTanNotifier.meterreadingTanList.last.description : '  NA'}',
-                                    style: pw.TextStyle(
-                                      font: alice,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  width: 270,
-                                  height: 630,
-                                  decoration: pw.BoxDecoration(
-                                      color: PdfColor.fromInt(0xfff3ded4)),
-                                ),
-                                pw.Container(
-                                  height: 670,
-                                  width: 870,
-                                  child: pw.GridView(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 01.01,
-                                    children: List<pw.Widget>.generate(
-                                      meterImgTanNotify.meterImgTanList.length,
-                                      (int n) {
-                                        var imag = PdfImage.file(
-                                          pdf.document,
-                                          bytes: File(meterImgTanNotify
-                                                  .meterImgTanList[n]
-                                                  .imagemetertan
-                                                  .path)
-                                              .readAsBytesSync(),
-                                        );
-                                        return pw.Container(
-                                            child: pw.Image(imag,
-                                                height: 290,
-                                                width: 400,
-                                                fit: pw.BoxFit.cover));
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ])),
-              ]),
-            ];
-          },
-        ));
-      }
+      if (elecMeterNotifier.elecMeterList.isNotEmpty || elecMeterPhNotifier.elecMeterPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  ELECTRIC METER: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '   Reading : ${elecMeterNotifier.elecMeterList.isNotEmpty ? elecMeterNotifier.elecMeterList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), /*pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Reading: ${elecMeterNotifier.elecMeterList.isNotEmpty ? elecMeterNotifier.elecMeterList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),),*/ pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '   Serial  : ${elecMeterNotifier.elecMeterList.isNotEmpty ? elecMeterNotifier.elecMeterList.last.description : '  NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '   Location: ${elecMeterNotifier.elecMeterList.isNotEmpty ? elecMeterNotifier.elecMeterList.last.condition : ' NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        elecMeterPhNotifier.elecMeterPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          elecMeterPhNotifier.elecMeterPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
+      if (gasMeterNotifier.gasMeterList.isNotEmpty || gasMeterPhNotifier.gasMeterPhList.isNotEmpty) {
+        final font = await rootBundle.load("assets/herrvon.ttf"); final herrvon = pw.Font.ttf(font);
+        final fonta = await rootBundle.load("assets/alive.ttf");  final alice = pw.Font.ttf(fonta);
+        final fontb = await rootBundle.load("assets/arimo.ttf");  final arimo = pw.Font.ttf(fontb);
+        var pwtheme = pw.Theme.withFont( base: pw.Font.ttf(await rootBundle.load("assets/arimo.ttf")),);
+        PdfImage _bgm;  _bgm = PdfImage.file( pdf.document, bytes: (await rootBundle.load('assets/bgm.jpg')).buffer.asUint8List(), );
+        pdf.addPage(pw.MultiPage(theme: pwtheme, pageFormat: PdfPageFormat.a3.landscape, margin: pw.EdgeInsets.all(1),
+          build: (pw.Context context) { return <pw.Widget>[pw.Stack(children: <pw.Widget>[pw.Container(child: pw.Image(_bgm, height: 831, fit: pw.BoxFit.cover),),
+            pw.Container(padding: pw.EdgeInsets.only(top: 10,), child: pw.Row(children: <pw.Widget>[pw.Text('    Check Inventory',style: pw.TextStyle(
+              font: herrvon, fontSize: 50.0, )),pw.SizedBox( width: 750,), pw.Column(children: <pw.Widget>[pw.Text('POWERED BY'), pw.UrlLink(
+              destination: 'https://www.eutopianlettings.co.uk', child: pw.Text('EUTOPIANLETTINGS.CO.UK'), ), ]) ]), ), pw.Container(
+                padding: pw.EdgeInsets.only(top: 1),child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start, crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: <pw.Widget>[ pw.SizedBox(height:100,), pw.Container( padding: pw.EdgeInsets.only(left: 20,), child: pw.Container(padding: pw.EdgeInsets.only
+                  (top: 10,left: 10,),decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), height: 40, width: 1145,child: pw.Row(children: <pw.Widget>[
+                  pw.Container( height: 35, width: 270,decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xffc7d0d8), borderRadius: 6),
+                    child: pw.Text('  GAS METER: ',
+                        style: pw.TextStyle(font: alice, fontSize: 22)),),pw.SizedBox(width: 15,), pw.Container( height: 35, width: 270,
+                    decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Reading: ${gasMeterNotifier.gasMeterList.isNotEmpty ? gasMeterNotifier.gasMeterList.last.quantity : ' NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20,)),), pw.SizedBox( width: 15, ), /*pw.Container(height: 35,width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Reading: ${gasMeterNotifier.gasMeterList.isNotEmpty ? gasMeterNotifier.gasMeterList.last.colour : ' NA'}',
+                        style: pw.TextStyle( font: alice,fontSize: 20,)),),*/ pw.SizedBox(width: 15,),pw.Container(height: 35, width: 270,
+                    decoration: const pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4), borderRadius: 6), child: pw.Text(
+                        '  Serial : ${gasMeterNotifier.gasMeterList.isNotEmpty ? gasMeterNotifier.gasMeterList.last.description : '  NA'}',
+                        style: pw.TextStyle(font: alice,fontSize: 20, )),),])),),pw.Container(padding: pw.EdgeInsets.only(left: 20),
+                  child: pw.Container(decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xffffffff),), width: 1145, padding: pw.EdgeInsets.only(left: 8),
+                    child: pw.Row(children: <pw.Widget>[ pw.SizedBox(width: 5, ),pw.Container( child: pw.Text(
+                      '  Location: ${gasMeterNotifier.gasMeterList.isNotEmpty ? gasMeterNotifier.gasMeterList.last.condition : ' NA'}',
+                      style: pw.TextStyle(font: alice, fontSize: 20,),),width: 270,height: 630,decoration: pw.BoxDecoration( color: PdfColor.fromInt(0xfff3ded4)), ),
+                      pw.Container(height: 670,width: 870,child: pw.GridView(crossAxisCount: 2,childAspectRatio: 01.01,children: List<pw.Widget>.generate(
+                        gasMeterPhNotifier.gasMeterPhList.length, (int n) {var imag = PdfImage.file( pdf.document, bytes: File(
+                          gasMeterPhNotifier.gasMeterPhList[n].photo.path).readAsBytesSync(),);return pw.Container(child: pw.Image(imag, height: 290,
+                          width: 400, fit: pw.BoxFit.contain)); }, ), ), ), ]), ), ), ])), ]), ]; }, )); }
     }
 
+/*
 
     writeOnPdfAddPage() async {
       var pwtheme = pw.Theme.withFont(
@@ -3459,6 +1962,7 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
         ));
       }
     }
+*/
 
     Future savePdf() async {
 //      Directory documentDirectory = await getApplicationDocumentsDirectory();
@@ -3468,7 +1972,7 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
       final time = DateTime.now().millisecondsSinceEpoch;
       pdffilename = 'inven';
 
-      File file = File("$documentPath/$pdffilename$time.pdf");
+      File file = await File("$documentPath/$pdffilename$time.pdf");
 //    final time = DateTime.now().millisecondsSinceEpoch;
 
 //    print(documentPath.toUpperCase());
@@ -3478,16 +1982,17 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
 //      String formattedTime = DateFormat.Hm().format(now);
 //   final output = await getTemporaryDirectory();
 //   final file = File("${output.path}/example.pdf");
-      file.writeAsBytesSync(pdf.save());
+     await file.writeAsBytesSync(pdf.save());
       print(file);
-//       final ByteData bytes = await rootBundle.load(file.path);
-//       await Share.file('Share your report', '$time.pdf', bytes.buffer.asUint8List(), '*/*');
+       final ByteData bytes = await rootBundle.load(file.path);
+       await Share.file('Share your report', '${introNotifier.introList.last.description}.pdf', bytes.buffer.asUint8List(), '*/*');
 //      Navigator.push(context,     MaterialPageRoute(builder: (context) => PdfViewer(path: file.path)));
 //      SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 //      sharedPrefs.remove('addressp');
 //      sharedPrefs.setString('addressp', file.path);
 
-      var addressp = '$pdffilename$time';
+//      var addressp = '$pdffilename$time';
+      var addressp = '${file.path}';
       SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
       sharedPrefs.setString('addressp', addressp);
@@ -3507,6 +2012,7 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
 //       Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewer(path: fullPath)));
     }
 
+
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -3515,75 +2021,80 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
           backgroundColor: Colors.transparent,
           body: Column(
             children: <Widget>[
-              _buildtitle(),
+          Container(
+          padding: EdgeInsets.only(top: 50),
+            child: Center(
+              child: Text(
+            '${introNotifier.introList.last.description.toUpperCase()}',
+//                "123 PORTLAND RD, LONDON",
+                style: TextStyle(
+                  fontFamily: 'arimo',
+                  fontSize: 25,
+                ),
+              ),
+            )),
               SizedBox(height: 55),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataExterior()));
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => Category(Route: '1')));
                 },
                 child: _btnexterior(),
-              ),
+              ),  //Exterior page
               SizedBox(
                 height: 15,
               ),
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataHallway()));
-                },
-                child: _btnhallway(),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataSmote()));
-                },
-                child: _btnsmotedetect(),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataKitchen()));
-                },
-                child: _btnkitchen(),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataBedroom()));
-                },
-                child: _btnbedroom(),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataKeys()));
+                      MaterialPageRoute(builder: (context) => homeKeys()));
                 },
                 child: _btnkeys(),
-              ),
+              ),// keys
               SizedBox(
                 height: 15,
               ),
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DataMeter()));
+                      MaterialPageRoute(builder: (context) => meterElec()));
                 },
                 child: _btnmeter(),
-              ),
+              ),// meter elctric
+              SizedBox( height: 15, ),
+              InkWell(
+                onTap: () {
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => Category(Route: '3',)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SmokeDetect()));
+                },
+                child: _btnsmotedetect(),
+              ), //smote detector
+              SizedBox( height: 15,),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Category(Route: '2',)));
+                },
+                child: _btnhallway(),
+              ), //hallway
+              SizedBox( height: 15, ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Category(Route: '4',)));
+                },
+                child: _btnkitchen(),
+              ), // kitchen
+              SizedBox( height: 15, ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Category(Route: '5',)));
+                },
+                child: _btnbedroom(),
+              ),// bedroom
             ],
           ),
           floatingActionButton: Stack(
@@ -3605,8 +2116,8 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
 //                      RoundedRectangleBorder(side: BorderSide(color: Colors.pink, width: 4.0)),
 
                     onPressed: () {
-                      Navigator.pop(context,
-                          MaterialPageRoute(builder: (context) => AppHome()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => IntroInvent()));
 
 //                        Navigator.of(context).pushNamed('/newInventroy');
 //                          Navigator.of(context).pushNamed('/newInventroy');
@@ -3626,13 +2137,13 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
                     onTap: () async {
                       await writeOnPdfCover();
                       await writeOnPdfContent();
-                      await writeOnPdfExterior();
-                      await writeOnPdfHallway();
-                      await writeOnPdfSmote();
-                      await writeOnPdfKitchen();
-                      await writeOnPdfBedroom();
                       await writeOnPdfChaabi();
                       await writeOnPdfMeter();
+                      await writeOnPdfSmote();
+                      await writeOnPdfHallway();
+                      await writeOnPdfKitchen();
+                      await writeOnPdfBedroom();
+//                      await writeOnPdfExterior();
 
 //                        _Block(title: 'Tour bus driver');
                       await savePdf();
@@ -3662,7 +2173,7 @@ pw.Container(height:600, width:320,child:pw.Container(padding:pw.EdgeInsets.only
                           child: Column(
                             children: <Widget>[
                               Text(
-                                "END",
+                                "GENERATE",
                                 style: TextStyle(
                                   color: Color(0xffffffff),
 //                                  fontFamily: 'alice',

@@ -516,6 +516,7 @@ if (hallwayNotifier.hallwayList.isEmpty){
                       Recstop();
                       print('3');},
                     onLongPressUp: (){print('4');},
+
                     child: Stack(
                       children:<Widget>
                       [CircleAvatar(

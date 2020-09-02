@@ -30,12 +30,12 @@ void initState() {
   switch(widget.jar) {
     case '1':
       {
-        imgtitle = 'Exterior Walls';
+        imgtitle = 'Gas Meter';
       }
       break;
-    case 'ba':
+    case '2':
       {
-        imgtitle = 'Exterior Windows';
+        imgtitle = 'Electrick Meter';
       }
       break;
     case '2':
