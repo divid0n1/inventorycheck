@@ -92,9 +92,9 @@ class _homeKeysState extends State<homeKeys> {
           key: _introformKey,
           child: new Theme(
             data: ThemeData(
-              primaryColor: Colors.deepPurpleAccent,
+              primaryColor: Color(0xff684c4c),
               accentColor: Colors.white,
-              hintColor: Colors.deepPurpleAccent,
+              hintColor: Color(0xff684c4c),
             ),
             child: Column(
               children: <Widget>[
@@ -145,7 +145,7 @@ class _homeKeysState extends State<homeKeys> {
                             filled: true,
                             border: UnderlineInputBorder(
                                 borderSide: new BorderSide(
-                                    color: Colors.deepPurpleAccent))),
+                                    color: Color(0xff684c4c)))),
 //                      validator: (String value) {
 //                        if (value.isEmpty) {
 //                          return 'Reference is required';
@@ -207,7 +207,7 @@ class _homeKeysState extends State<homeKeys> {
                             filled: true,
                             border: UnderlineInputBorder(
                                 borderSide: new BorderSide(
-                                    color: Colors.deepPurpleAccent))),
+                                    color: Color(0xff684c4c)))),
 //                      validator: (String value) {
 //                        if (value.isEmpty) {
 //                          return 'Date of inspection is required';

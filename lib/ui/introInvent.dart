@@ -452,7 +452,7 @@ _saveform(){
                     Text('No Image selected for Inventory',style: TextStyle( fontFamily: 'alice',fontSize: 20,),),
                     SizedBox(height: 10,),
                     Text('You want to Skip it?',style: TextStyle( fontFamily: 'alice',fontSize: 20,),),
-                    SizedBox(height: 70,),
+                    SizedBox(height: 55,),
                     Center(
                       child: Row(mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
