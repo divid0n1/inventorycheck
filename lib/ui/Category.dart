@@ -1,3 +1,5 @@
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -37,11 +39,12 @@ class _CategoryState extends State<Category> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '1': { _titlep = 'Exterior'; } break;
+      case '1': { _titlep = 'Bedroom 2'; } break;
       case '2': { _titlep = 'Hallway';  } break;
-      case '3': { _titlep = 'Smote Detector';  } break;
+      case '3': { _titlep = 'Bedroom 3';  } break;
       case '4': { _titlep = 'Kitchen';  } break;
       case '5': { _titlep = 'Bedroom';  } break;
+      case '6': { _titlep = 'Bedroom 4';  } break;
 
       default:
         {
@@ -298,6 +301,27 @@ class _CategoryState extends State<Category> {
     KitWindowsPhNotifier kitWindowsPhNotifier = Provider.of<KitWindowsPhNotifier>(context);
     BedWindowsPhNotifier bedWindowsPhNotifier = Provider.of<BedWindowsPhNotifier>(context);
 
+    BdfourFrameNotifier bdfourFrameNotifier = Provider.of<BdfourFrameNotifier>(context);
+    BdfourFramePhNotifier bdfourFramePhNotifier = Provider.of<BdfourFramePhNotifier>(context);
+
+    BdfourExdoorNotifier bdfourExdoorNotifier = Provider.of<BdfourExdoorNotifier>(context);
+    BdfourExdoorPhNotifier bdfourExdoorPhNotifier = Provider.of<BdfourExdoorPhNotifier>(context);
+
+    BdfourIndoorNotifier bdfourIndoorNotifier = Provider.of<BdfourIndoorNotifier>(context);
+    BdfourIndoorPhNotifier bdfourIndoorPhNotifier = Provider.of<BdfourIndoorPhNotifier>(context);
+
+    BdfourCeilingPhNotifier bdfourCeilingPhNotifier = Provider.of<BdfourCeilingPhNotifier>(context);
+    BdfourCeilingNotifier bdfourCeilingNotifier = Provider.of<BdfourCeilingNotifier>(context);
+
+    BdfourLightPhNotifier bdfourLightPhNotifier = Provider.of<BdfourLightPhNotifier>(context);
+    BdfourLightNotifier bdfourLightNotifier = Provider.of<BdfourLightNotifier>(context);
+
+    BdfourWallsNotifier bdfourWallsNotifier = Provider.of<BdfourWallsNotifier>(context);
+    BdfourWallsPhNotifier bdfourWallsPhNotifier = Provider.of<BdfourWallsPhNotifier>(context);
+
+    BdfourWindowsNotifier bdfourWindowsNotifier = Provider.of<BdfourWindowsNotifier>(context);
+    BdfourWindowsPhNotifier bdfourWindowsPhNotifier = Provider.of<BdfourWindowsPhNotifier>(context);
+
 
 
     _checklistFrame(){
@@ -320,6 +344,10 @@ class _CategoryState extends State<Category> {
         } break;
         case '5':{
           if (bedFrameNotifier.bedFrameList.isNotEmpty || bedFramePhNotifier.bedFramePhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
+        case '6':{
+          if (bdfourFrameNotifier.bdfourFrameList.isNotEmpty || bdfourFramePhNotifier.bdfourFramePhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
 
@@ -348,6 +376,10 @@ class _CategoryState extends State<Category> {
         } break;
         case '5':{
           if (bedExdoorNotifier.bedExdoorList.isNotEmpty || bedExdoorPhNotifier.bedExdoorPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
+        case '6':{
+          if (bdfourExdoorNotifier.bdfourExdoorList.isNotEmpty || bdfourExdoorPhNotifier.bdfourExdoorPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
 
@@ -379,6 +411,11 @@ class _CategoryState extends State<Category> {
           ){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
+        case '6':{
+          if (bdfourIndoorNotifier.bdfourIndoorList.isNotEmpty || bdfourIndoorPhNotifier.bdfourIndoorPhList.isNotEmpty
+          ){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
 
 
         default: {print('unable to determine'); } break;
@@ -405,6 +442,10 @@ class _CategoryState extends State<Category> {
         } break;
         case '5':{
           if (bedCeilingNotifier.bedCeilingList.isNotEmpty || bedCeilingPhNotifier.bedCeilingPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
+        case '6':{
+          if (bdfourCeilingNotifier.bdfourCeilingList.isNotEmpty || bdfourCeilingPhNotifier.bdfourCeilingPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
 
@@ -435,6 +476,10 @@ class _CategoryState extends State<Category> {
           if (bedLightNotifier.bedLightList.isNotEmpty || bedLightPhNotifier.bedLightPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
+        case '6':{
+          if (bdfourLightNotifier.bdfourLightList.isNotEmpty || bdfourLightPhNotifier.bdfourLightPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
 
 
         default: {print('unable to determine'); } break;
@@ -463,6 +508,10 @@ class _CategoryState extends State<Category> {
           if (bedWallsNotifier.bedWallsList.isNotEmpty || bedWallsPhNotifier.bedWallsPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
+        case '6':{
+          if (bdfourWallsNotifier.bdfourWallsList.isNotEmpty || bdfourWallsPhNotifier.bdfourWallsPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
 
 
         default: {print('unable to determine'); } break;
@@ -489,6 +538,10 @@ class _CategoryState extends State<Category> {
         } break;
         case '5':{
           if (bedWindowsNotifier.bedWindowsList.isNotEmpty || bedWindowsPhNotifier.bedWindowsPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
+            color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
+        } break;
+        case '6':{
+          if (bdfourWindowsNotifier.bdfourWindowsList.isNotEmpty || bdfourWindowsPhNotifier.bdfourWindowsPhList.isNotEmpty){return  Container( padding: EdgeInsets.only(left: 260, top:8,),child: Icon( Icons.done,
             color: Color(0xff684c4c), size: 35.0, semanticLabel: 'Added', ));} else {return Container();}
         } break;
 
@@ -580,7 +633,7 @@ class _CategoryState extends State<Category> {
           children: <Widget>[
             Center(
                 child: Text(
-                  "Interior door gittings",
+                  "Interior door fittings",
                   style: TextStyle(
                     color: Color(0xff684c4c),
                     fontFamily: 'alice',
@@ -707,7 +760,7 @@ class _CategoryState extends State<Category> {
           body: Column(
             children: <Widget>[
               Container(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: EdgeInsets.only(top: 30),
                   child: Center(
                     child: Text(
 //                      '${introNotifier.introList.last.description.toUpperCase()}',
@@ -720,7 +773,7 @@ class _CategoryState extends State<Category> {
                       ),
                     ),
                   )),
-              SizedBox(height: 35),
+              SizedBox(height: 25),
               InkWell(
                 onTap: () {
                 _framesNav();

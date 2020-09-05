@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -38,11 +40,12 @@ class _CeilingState extends State<Ceiling> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '14': { _title = 'Exterior'; } break;
+      case '14': { _title = 'Bedroom 2'; } break;
       case '24': { _title = 'Hallway'; } break;
-      case '34': { _title = 'Smote Detecor'; } break;
+      case '34': { _title = 'Bedroom 3'; } break;
       case '44': { _title = 'Kitchen'; } break;
       case '54': { _title = 'Bedroom'; } break;
+      case '64': { _title = 'Bedroom 4'; } break;
       default:
         { print('unable to determine');  }
         break;
@@ -57,6 +60,7 @@ class _CeilingState extends State<Ceiling> {
       case '34': { Navigator.push(context, MaterialPageRoute(builder: (context) => Light(Route: '35',))); } break;
       case '44': { Navigator.push(context, MaterialPageRoute(builder: (context) => Light(Route: '45',))); } break;
       case '54': { Navigator.push(context, MaterialPageRoute(builder: (context) => Light(Route: '55',))); } break;
+      case '64': { Navigator.push(context, MaterialPageRoute(builder: (context) => Light(Route: '65',))); } break;
 
       default:
         {
@@ -143,6 +147,8 @@ class _CeilingState extends State<Ceiling> {
     SmoCeilingPhNotifier smoCeilingPhNotifier = Provider.of<SmoCeilingPhNotifier>(context);
     KitCeilingPhNotifier kitCeilingPhNotifier = Provider.of<KitCeilingPhNotifier>(context);
     BedCeilingPhNotifier bedCeilingPhNotifier = Provider.of<BedCeilingPhNotifier>(context);
+    BdfourCeilingPhNotifier bdfourCeilingPhNotifier = Provider.of<BdfourCeilingPhNotifier>(context);
+    BdfourCeilingNotifier bdfourCeilingNotifier = Provider.of<BdfourCeilingNotifier>(context);
 
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
 
@@ -153,6 +159,7 @@ class _CeilingState extends State<Ceiling> {
         case '34': {return smoCeilingPhNotifier.smoCeilingPhList.isNotEmpty ? smoCeilingPhNotifier.smoCeilingPhList.length : '0';} break;
         case '44': {return kitCeilingPhNotifier.kitCeilingPhList.isNotEmpty ? kitCeilingPhNotifier.kitCeilingPhList.length : '0';} break;
         case '54': {return bedCeilingPhNotifier.bedCeilingPhList.isNotEmpty ? bedCeilingPhNotifier.bedCeilingPhList.length : '0';} break;
+        case '64': {return bdfourCeilingPhNotifier.bdfourCeilingPhList.isNotEmpty ? bdfourCeilingPhNotifier.bdfourCeilingPhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -183,6 +190,10 @@ class _CeilingState extends State<Ceiling> {
           setState(() {
             bedCeilingNotifier.addBedCeiling(BedCeiling(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '64': {
+          setState(() {
+            bdfourCeilingNotifier.addBdfourCeiling(BdfourCeiling(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -205,6 +216,9 @@ class _CeilingState extends State<Ceiling> {
         case '54': {
           return  bedCeilingNotifier.bedCeilingList.isEmpty ? '' : '${bedCeilingNotifier.bedCeilingList.last.description}';
         } break;
+        case '64': {
+          return  bdfourCeilingNotifier.bdfourCeilingList.isEmpty ? '' : '${bdfourCeilingNotifier.bdfourCeilingList.last.description}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
 
@@ -226,6 +240,9 @@ class _CeilingState extends State<Ceiling> {
         case '54': {
           return   bedCeilingNotifier.bedCeilingList.isEmpty ? '' : '${bedCeilingNotifier.bedCeilingList.last.quantity}';
         } break;
+        case '64': {
+          return   bdfourCeilingNotifier.bdfourCeilingList.isEmpty ? '' : '${bdfourCeilingNotifier.bdfourCeilingList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -245,6 +262,9 @@ class _CeilingState extends State<Ceiling> {
         } break;
         case '54': {
           return   bedCeilingNotifier.bedCeilingList.isEmpty ? '' : '${bedCeilingNotifier.bedCeilingList.last.colour}';
+        } break;
+        case '64': {
+          return   bdfourCeilingNotifier.bdfourCeilingList.isEmpty ? '' : '${bdfourCeilingNotifier.bdfourCeilingList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -266,6 +286,9 @@ class _CeilingState extends State<Ceiling> {
         case '54': {
           return  bedCeilingNotifier.bedCeilingList.isEmpty ? '' : '${bedCeilingNotifier.bedCeilingList.last.condition}';
         } break;
+        case '64': {
+          return  bdfourCeilingNotifier.bdfourCeilingList.isEmpty ? '' : '${bdfourCeilingNotifier.bdfourCeilingList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -276,6 +299,7 @@ class _CeilingState extends State<Ceiling> {
         case '34': {return '34p';} break;
         case '44': {return '44p';} break;
         case '54': {return '54p';} break;
+        case '64': {return '64p';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -328,7 +352,7 @@ class _CeilingState extends State<Ceiling> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -370,7 +394,7 @@ class _CeilingState extends State<Ceiling> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -507,7 +531,7 @@ class _CeilingState extends State<Ceiling> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

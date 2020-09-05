@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -42,12 +44,12 @@ class _FramesState extends State<Frames> {
 
     super.initState();
     switch(widget.Route) {
-      case '11':{_title = 'Exterior'; } break;
+      case '11':{_title = 'Bedroom 2'; } break;
       case '21':{_title = 'Hallway'; } break;
-      case '31':{_title = 'Smote Detector'; } break;
+      case '31':{_title = 'Bedroom 3'; } break;
       case '41':{_title = 'Kitchen'; } break;
-      case '51':{_title = 'BedRoom'; } break;
-      case '61':{_title = 'Keys 61'; } break;
+      case '51':{_title = 'Bedroom'; } break;
+      case '61':{_title = 'Bedroom 4'; } break;
       case '71':{_title = 'Meter Reading 71'; } break;
       default: {print('unable to determine'); } break;
     }
@@ -143,6 +145,8 @@ class _FramesState extends State<Frames> {
     SmoFramePhNotifier smoFramePhNotifier = Provider.of<SmoFramePhNotifier>(context);
     KitFramePhNotifier kitFramePhNotifier = Provider.of<KitFramePhNotifier>(context);
     BedFramePhNotifier bedFramePhNotifier = Provider.of<BedFramePhNotifier>(context);
+    BdfourFrameNotifier bdfourFrameNotifier = Provider.of<BdfourFrameNotifier>(context);
+    BdfourFramePhNotifier bdfourFramePhNotifier = Provider.of<BdfourFramePhNotifier>(context);
 
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
 
@@ -172,6 +176,10 @@ class _FramesState extends State<Frames> {
           setState(() {
             bedFrameNotifier.addBedFrame(BedFrame(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '61': {
+          setState(() {
+            bdfourFrameNotifier.addBdfourFrame(BdfourFrame(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -194,6 +202,9 @@ class _FramesState extends State<Frames> {
         case '51': {
           return  bedFrameNotifier.bedFrameList.isEmpty ? '' : '${bedFrameNotifier.bedFrameList.last.description}';
         } break;
+        case '61': {
+          return  bdfourFrameNotifier.bdfourFrameList.isEmpty ? '' : '${bdfourFrameNotifier.bdfourFrameList.last.description}';
+        } break;
          default:   { print('unable to determine'); } break;
       }
 
@@ -215,6 +226,9 @@ class _FramesState extends State<Frames> {
         case '51': {
           return   bedFrameNotifier.bedFrameList.isEmpty ? '' : '${bedFrameNotifier.bedFrameList.last.quantity}';
         } break;
+        case '61': {
+          return   bdfourFrameNotifier.bdfourFrameList.isEmpty ? '' : '${bdfourFrameNotifier.bdfourFrameList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -234,6 +248,9 @@ class _FramesState extends State<Frames> {
         } break;
         case '51': {
           return   bedFrameNotifier.bedFrameList.isEmpty ? ' ' : '${bedFrameNotifier.bedFrameList.last.colour}';
+        } break;
+        case '61': {
+          return   bdfourFrameNotifier.bdfourFrameList.isEmpty ? '' : '${bdfourFrameNotifier.bdfourFrameList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -255,6 +272,9 @@ class _FramesState extends State<Frames> {
         case '51': {
           return  bedFrameNotifier.bedFrameList.isEmpty ? '' : '${bedFrameNotifier.bedFrameList.last.condition}';
         } break;
+        case '61': {
+          return  bdfourFrameNotifier.bdfourFrameList.isEmpty ? '' : '${bdfourFrameNotifier.bdfourFrameList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -265,6 +285,7 @@ class _FramesState extends State<Frames> {
         case '31': {return '31p';} break;
         case '41': {return '41p';} break;
         case '51': {return '51p';} break;
+        case '61': {return '61p';} break;
         default: {print('I dont know');} break;
       }
 }
@@ -275,6 +296,7 @@ class _FramesState extends State<Frames> {
         case '31': {return smoFramePhNotifier.smoFramePhList.isNotEmpty ? smoFramePhNotifier.smoFramePhList.length : '0';} break;
         case '41': {return kitFramePhNotifier.kitFramePhList.isNotEmpty ? kitFramePhNotifier.kitFramePhList.length : '0';} break;
         case '51': {return bedFramePhNotifier.bedFramePhList.isNotEmpty ? bedFramePhNotifier.bedFramePhList.length : '0';} break;
+        case '61': {return bdfourFramePhNotifier.bdfourFramePhList.isNotEmpty ? bdfourFramePhNotifier.bdfourFramePhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -327,7 +349,7 @@ class _FramesState extends State<Frames> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -369,7 +391,7 @@ class _FramesState extends State<Frames> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -518,7 +540,7 @@ class _FramesState extends State<Frames> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

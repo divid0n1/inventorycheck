@@ -66,7 +66,7 @@ class _meterGasState extends State<meterGas> {
           width: 10,
         ),
         Text(
-          "  SERIAL NUMBER",
+          "     SERIAL NUMBER",
           style: TextStyle(
             color: Color(0xff684c4c),
             fontFamily: 'arimo',
@@ -381,7 +381,7 @@ class _meterGasState extends State<meterGas> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(gasMeterPhNotifier.gasMeterPhList.isEmpty ? '0': '${gasMeterPhNotifier.gasMeterPhList.length}',

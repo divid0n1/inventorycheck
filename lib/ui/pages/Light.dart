@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -42,11 +44,12 @@ class _LightState extends State<Light> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '15': { _title = 'Exterior'; } break;
+      case '15': { _title = 'Bedroom 2'; } break;
       case '25': { _title = 'Hallway'; } break;
-      case '35': { _title = 'Smote Detector'; } break;
+      case '35': { _title = 'Bedroom 3'; } break;
       case '45': { _title = 'Kitchen'; } break;
       case '55': { _title = 'Bedroom'; } break;
+      case '65': { _title = 'Bedroom 4'; } break;
       default:
         {
           print('unable to determine');
@@ -62,6 +65,7 @@ class _LightState extends State<Light> {
       case '35': { Navigator.push(context, MaterialPageRoute(builder: (context) => Walls(Route: '36',))); } break;
       case '45': { Navigator.push(context, MaterialPageRoute(builder: (context) => Walls(Route: '46',))); } break;
       case '55': { Navigator.push(context, MaterialPageRoute(builder: (context) => Walls(Route: '56',))); } break;
+      case '65': { Navigator.push(context, MaterialPageRoute(builder: (context) => Walls(Route: '66',))); } break;
 
       default:
         {
@@ -144,6 +148,9 @@ class _LightState extends State<Light> {
     SmoLightPhNotifier smoLightPhNotifier = Provider.of<SmoLightPhNotifier>(context);
     KitLightPhNotifier kitLightPhNotifier = Provider.of<KitLightPhNotifier>(context);
     BedLightPhNotifier bedLightPhNotifier = Provider.of<BedLightPhNotifier>(context);
+    BdfourLightPhNotifier bdfourLightPhNotifier = Provider.of<BdfourLightPhNotifier>(context);
+    BdfourLightNotifier bdfourLightNotifier = Provider.of<BdfourLightNotifier>(context);
+
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
     _ImgCount(){
       switch(widget.Route){
@@ -152,6 +159,7 @@ class _LightState extends State<Light> {
         case '35': {return smoLightPhNotifier.smoLightPhList.isNotEmpty ? smoLightPhNotifier.smoLightPhList.length : '0';} break;
         case '45': {return kitLightPhNotifier.kitLightPhList.isNotEmpty ? kitLightPhNotifier.kitLightPhList.length : '0';} break;
         case '55': {return bedLightPhNotifier.bedLightPhList.isNotEmpty ? bedLightPhNotifier.bedLightPhList.length : '0';} break;
+        case '65': {return bdfourLightPhNotifier.bdfourLightPhList.isNotEmpty ? bdfourLightPhNotifier.bdfourLightPhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -181,6 +189,10 @@ class _LightState extends State<Light> {
           setState(() {
             bedLightNotifier.addBedLight(BedLight(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '65': {
+          setState(() {
+            bdfourLightNotifier.addBdfourLight(BdfourLight(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -203,6 +215,9 @@ class _LightState extends State<Light> {
         case '55': {
           return  bedLightNotifier.bedLightList.isEmpty ? '' : '${bedLightNotifier.bedLightList.last.description}';
         } break;
+        case '65': {
+          return  bdfourLightNotifier.bdfourLightList.isEmpty ? '' : '${bdfourLightNotifier.bdfourLightList.last.description}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
 
@@ -224,6 +239,9 @@ class _LightState extends State<Light> {
         case '55': {
           return  bedLightNotifier.bedLightList.isEmpty ? '' : '${bedLightNotifier.bedLightList.last.quantity}';
         } break;
+        case '65': {
+          return  bdfourLightNotifier.bdfourLightList.isEmpty ? '' : '${bdfourLightNotifier.bdfourLightList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -243,6 +261,9 @@ class _LightState extends State<Light> {
         } break;
         case '55': {
           return  bedLightNotifier.bedLightList.isEmpty ? '' : '${bedLightNotifier.bedLightList.last.colour}';
+        } break;
+        case '65': {
+          return  bdfourLightNotifier.bdfourLightList.isEmpty ? '' : '${bdfourLightNotifier.bdfourLightList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -264,6 +285,9 @@ class _LightState extends State<Light> {
         case '55': {
           return  bedLightNotifier.bedLightList.isEmpty ? '' : '${bedLightNotifier.bedLightList.last.condition}';
         } break;
+        case '65': {
+          return  bdfourLightNotifier.bdfourLightList.isEmpty ? '' : '${bdfourLightNotifier.bdfourLightList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -274,6 +298,7 @@ class _LightState extends State<Light> {
         case '35': {return '35p';} break;
         case '45': {return '45p';} break;
         case '55': {return '55p';} break;
+        case '65': {return '65p';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -328,7 +353,7 @@ class _LightState extends State<Light> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -370,7 +395,7 @@ class _LightState extends State<Light> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -506,7 +531,7 @@ class _LightState extends State<Light> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

@@ -5,6 +5,8 @@ import 'package:inventorycheck/ui/apphome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'NotifierList/BdfourPhoto.dart';
+import 'NotifierList/BdfourText.dart';
 import 'NotifierList/BedroomPhoto.dart';
 import 'NotifierList/BedroomText.dart';
 import 'NotifierList/ExteriorPhoto.dart';
@@ -109,6 +111,21 @@ void main() => runApp(
 
           ChangeNotifierProvider(create: (context) => SmokeDeNotifier()),
           ChangeNotifierProvider(create: (context) => SmokeDePhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourIndoorNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourCeilingNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourLightNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourWallsNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourWindowsNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourFrameNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourExdoorNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourFramePhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourExdoorPhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourIndoorPhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourCeilingPhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourLightPhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourWallsPhNotifier()),
+          ChangeNotifierProvider(create: (context) => BdfourWindowsPhNotifier()),
+
 
 
 

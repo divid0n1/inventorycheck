@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -43,11 +45,12 @@ class _ExtDoorState extends State<ExtDoor> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '12': {_title = 'Exterior'; } break;
+      case '12': {_title = 'Bedroom 2'; } break;
       case '22': {_title = 'Hallway'; } break;
-      case '32': {_title = 'Smote Detector'; } break;
+      case '32': {_title = 'Bedroom 3'; } break;
       case '42': {_title = 'Kitchen'; } break;
       case '52': {_title = 'Bedroom'; } break;
+      case '62': {_title = 'Bedroom 4'; } break;
       default: { print('unable to determine');} break;
     }
   }
@@ -59,6 +62,7 @@ class _ExtDoorState extends State<ExtDoor> {
       case '32': { Navigator.push(context, MaterialPageRoute(builder: (context) => IntDoor(Route: '33',))); } break;
       case '42': { Navigator.push(context, MaterialPageRoute(builder: (context) => IntDoor(Route: '43',))); } break;
       case '52': { Navigator.push(context, MaterialPageRoute(builder: (context) => IntDoor(Route: '53',))); } break;
+      case '62': { Navigator.push(context, MaterialPageRoute(builder: (context) => IntDoor(Route: '63',))); } break;
       default: { print('unable to determine');} break;
     }
   }
@@ -139,6 +143,10 @@ class _ExtDoorState extends State<ExtDoor> {
     SmoExdoorPhNotifier smoExdoorPhNotifier = Provider.of<SmoExdoorPhNotifier>(context);
     KitExdoorPhNotifier kitExdoorPhNotifier = Provider.of<KitExdoorPhNotifier>(context);
     BedExdoorPhNotifier bedExdoorPhNotifier = Provider.of<BedExdoorPhNotifier>(context);
+
+    BdfourExdoorNotifier bdfourExdoorNotifier = Provider.of<BdfourExdoorNotifier>(context);
+    BdfourExdoorPhNotifier bdfourExdoorPhNotifier = Provider.of<BdfourExdoorPhNotifier>(context);
+
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
 
     _savetext(){
@@ -166,6 +174,10 @@ class _ExtDoorState extends State<ExtDoor> {
           setState(() {
             bedExdoorNotifier.addBedExdoor(BedExdoor(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '62': {
+          setState(() {
+            bdfourExdoorNotifier.addBdfourExdoor(BdfourExdoor(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -188,6 +200,9 @@ class _ExtDoorState extends State<ExtDoor> {
         case '52': {
           return  bedExdoorNotifier.bedExdoorList.isEmpty ? '' : '${bedExdoorNotifier.bedExdoorList.last.description}';
         } break;
+        case '62': {
+          return  bdfourExdoorNotifier.bdfourExdoorList.isEmpty ? '' : '${bdfourExdoorNotifier.bdfourExdoorList.last.description}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
 
@@ -209,6 +224,9 @@ class _ExtDoorState extends State<ExtDoor> {
         case '52': {
           return   bedExdoorNotifier.bedExdoorList.isEmpty ? '' : '${bedExdoorNotifier.bedExdoorList.last.quantity}';
         } break;
+        case '62': {
+          return   bdfourExdoorNotifier.bdfourExdoorList.isEmpty ? '' : '${bdfourExdoorNotifier.bdfourExdoorList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -228,6 +246,9 @@ class _ExtDoorState extends State<ExtDoor> {
         } break;
         case '52': {
           return   bedExdoorNotifier.bedExdoorList.isEmpty ? '' : '${bedExdoorNotifier.bedExdoorList.last.colour}';
+        } break;
+        case '62': {
+          return   bdfourExdoorNotifier.bdfourExdoorList.isEmpty ? '' : '${bdfourExdoorNotifier.bdfourExdoorList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -249,6 +270,9 @@ class _ExtDoorState extends State<ExtDoor> {
         case '52': {
           return  bedExdoorNotifier.bedExdoorList.isEmpty ? '' : '${bedExdoorNotifier.bedExdoorList.last.condition}';
         } break;
+        case '62': {
+          return  bdfourExdoorNotifier.bdfourExdoorList.isEmpty ? '' : '${bdfourExdoorNotifier.bdfourExdoorList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -259,6 +283,7 @@ class _ExtDoorState extends State<ExtDoor> {
         case '32': {return '32p';} break;
         case '42': {return '42p';} break;
         case '52': {return '52p';} break;
+        case '62': {return '62p';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -269,6 +294,7 @@ class _ExtDoorState extends State<ExtDoor> {
         case '32': {return smoExdoorPhNotifier.smoExdoorPhList.isNotEmpty ? smoExdoorPhNotifier.smoExdoorPhList.length : '0';} break;
         case '42': {return kitExdoorPhNotifier.kitExdoorPhList.isNotEmpty ? kitExdoorPhNotifier.kitExdoorPhList.length : '0';} break;
         case '52': {return bedExdoorPhNotifier.bedExdoorPhList.isNotEmpty ? bedExdoorPhNotifier.bedExdoorPhList.length : '0';} break;
+        case '62': {return bdfourExdoorPhNotifier.bdfourExdoorPhList.isNotEmpty ? bdfourExdoorPhNotifier.bdfourExdoorPhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -322,7 +348,7 @@ class _ExtDoorState extends State<ExtDoor> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -364,7 +390,7 @@ class _ExtDoorState extends State<ExtDoor> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -501,7 +527,7 @@ class _ExtDoorState extends State<ExtDoor> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

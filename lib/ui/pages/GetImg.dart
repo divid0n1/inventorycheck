@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
 import 'package:inventorycheck/NotifierList/HallwayPhoto.dart';
 import 'package:inventorycheck/NotifierList/KitchenPhoto.dart';
 import 'package:inventorycheck/NotifierList/SmotePhoto.dart';
 import 'package:image/image.dart' as imgg;
-import 'package:inventorycheck/model/imagedata.dart';
+import 'package:intl/intl.dart';
 import 'package:inventorycheck/model/textdata.dart';
 import 'package:inventorycheck/notify/imagesnotifier.dart';
 import 'package:inventorycheck/notify/textnotifier.dart';
@@ -31,13 +32,13 @@ void initState() {
   super.initState();
 //switch
   switch(widget.Route) {
-    case '11p': { imgtitle = 'Exterior Doorss'; } break;
-    case '12p': { imgtitle = 'Exterior Doors'; } break;
-    case '13p': { imgtitle = 'Exterior Interior'; } break;
-    case '14p': { imgtitle = 'Exterior Ceiling'; } break;
-    case '15p': { imgtitle = 'Exterior Light'; } break;
-    case '16p': { imgtitle = 'Exterior Walls'; } break;
-    case '17p': { imgtitle = 'Exterior Windows'; } break;
+    case '11p': { imgtitle = 'Bedroom 2 Doorss'; } break;
+    case '12p': { imgtitle = 'Bedroom 2 Doors'; } break;
+    case '13p': { imgtitle = 'Bedroom 2 Interior'; } break;
+    case '14p': { imgtitle = 'Bedroom 2 Ceiling'; } break;
+    case '15p': { imgtitle = 'Bedroom 2 Light'; } break;
+    case '16p': { imgtitle = 'Bedroom 2 Walls'; } break;
+    case '17p': { imgtitle = 'Bedroom 2 Windows'; } break;
     case '21p': { imgtitle = 'Doors & Frames'; } break;
     case '22p': { imgtitle = 'Hallway Exterior'; } break;
     case '23p': { imgtitle = 'Hallway Interior'; } break;
@@ -45,13 +46,13 @@ void initState() {
     case '25p': { imgtitle = 'Hallway Light'; } break;
     case '26p': { imgtitle = 'Hallway Walls'; } break;
     case '27p': { imgtitle = 'Hallway Windows'; } break;
-    case '31p': { imgtitle = 'Smote Detector Doors'; } break;
-    case '32p': { imgtitle = 'Smote Detector Exterior'; } break;
-    case '33p': { imgtitle = 'Smote Detector Interior'; } break;
-    case '34p': { imgtitle = 'Smote Detector Ceiling'; } break;
-    case '35p': { imgtitle = 'Smote Detector Light'; } break;
-    case '36p': { imgtitle = 'Smote Detector Walls'; } break;
-    case '37p': { imgtitle = 'Smote Detector Windows'; } break;
+    case '31p': { imgtitle = 'Bedroom 3 Doors'; } break;
+    case '32p': { imgtitle = 'Bedroom 3 Exterior'; } break;
+    case '33p': { imgtitle = 'Bedroom 3 Interior'; } break;
+    case '34p': { imgtitle = 'Bedroom 3 Ceiling'; } break;
+    case '35p': { imgtitle = 'Bedroom 3 Light'; } break;
+    case '36p': { imgtitle = 'Bedroom 3 Walls'; } break;
+    case '37p': { imgtitle = 'Bedroom 3 Windows'; } break;
     case '41p': { imgtitle = 'Kitchen Doors & Frame'; } break;
     case '42p': { imgtitle = 'Kitchen Exterior'; } break;
     case '43p': { imgtitle = 'Kitchen Interior'; } break;
@@ -66,6 +67,13 @@ void initState() {
     case '55p': { imgtitle = 'Bedroom Light'; } break;
     case '56p': { imgtitle = 'Bedroom Walls'; } break;
     case '57p': { imgtitle = 'Bedroom Windows'; } break;
+    case '61p': { imgtitle = 'Bedroom 4 Frame'; } break;
+    case '62p': { imgtitle = 'Bedroom 4 Exterior'; } break;
+    case '63p': { imgtitle = 'Bedroom 4 Interior'; } break;
+    case '64p': { imgtitle = 'Bedroom 4 Ceiling'; } break;
+    case '65p': { imgtitle = 'Bedroom 4 Light'; } break;
+    case '66p': { imgtitle = 'Bedroom 4 Walls'; } break;
+    case '67p': { imgtitle = 'Bedroom 4 Windows'; } break;
 
 
     default:
@@ -138,14 +146,22 @@ _buildtitlefloor (){
     BedLightPhNotifier bedLightPhNotifier = Provider.of<BedLightPhNotifier>(context);
     BedWallsPhNotifier bedWallsPhNotifier = Provider.of<BedWallsPhNotifier>(context);
     BedWindowsPhNotifier bedWindowsPhNotifier = Provider.of<BedWindowsPhNotifier>(context);
+    BdfourFramePhNotifier bdfourFramePhNotifier = Provider.of<BdfourFramePhNotifier>(context);
+    BdfourExdoorPhNotifier bdfourExdoorPhNotifier = Provider.of<BdfourExdoorPhNotifier>(context);
+    BdfourIndoorPhNotifier bdfourIndoorPhNotifier = Provider.of<BdfourIndoorPhNotifier>(context);
+    BdfourCeilingPhNotifier bdfourCeilingPhNotifier = Provider.of<BdfourCeilingPhNotifier>(context);
+    BdfourLightPhNotifier bdfourLightPhNotifier = Provider.of<BdfourLightPhNotifier>(context);
+    BdfourWallsPhNotifier bdfourWallsPhNotifier = Provider.of<BdfourWallsPhNotifier>(context);
+    BdfourWindowsPhNotifier bdfourWindowsPhNotifier = Provider.of<BdfourWindowsPhNotifier>(context);
+
+
 
     imageSelectorCamera() async {
 
       cameraFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
       );
-      var datetim = '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}--${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}';
-      var decodeImg = imgg.decodeImage(cameraFile.readAsBytesSync());
+      var datetim = '${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ';      var decodeImg = imgg.decodeImage(cameraFile.readAsBytesSync());
       imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
       var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
       var finalImage = File(cameraFile.path)..writeAsBytesSync(encodeImage);
@@ -188,6 +204,13 @@ _buildtitlefloor (){
             case '55p': { bedLightPhNotifier.addBedLightPh(BedLightPh(finalImage)); }break;
             case '56p': { bedWallsPhNotifier.addBedWallsPh(BedWallsPh(finalImage)); }break;
             case '57p': { bedWindowsPhNotifier.addBedWindowsPh(BedWindowsPh(finalImage)); }break;
+            case '61p': { bdfourFramePhNotifier.addBdfourFramePh(BdfourFramePh(finalImage)); }break;
+            case '62p': { bdfourExdoorPhNotifier.addBdfourExdoorPh(BdfourExdoorPh(finalImage)); }break;
+            case '63p': { bdfourIndoorPhNotifier.addBdfourIndoorPh(BdfourIndoorPh(finalImage)); }break;
+            case '64p': { bdfourCeilingPhNotifier.addBdfourCeilingPh(BdfourCeilingPh(finalImage)); }break;
+            case '65p': { bdfourLightPhNotifier.addBdfourLightPh(BdfourLightPh(finalImage)); }break;
+            case '66p': { bdfourWallsPhNotifier.addBdfourWallsPh(BdfourWallsPh(finalImage)); }break;
+            case '67p': { bdfourWindowsPhNotifier.addBdfourWindowsPh(BdfourWindowsPh(finalImage)); }break;
 
             default: { print('unable to determine'); } break;}
         }
@@ -245,6 +268,13 @@ _buildtitlefloor (){
           case '55p': { bedLightPhNotifier.addBedLightPh(BedLightPh(galleryFile)); }break;
           case '56p': { bedWallsPhNotifier.addBedWallsPh(BedWallsPh(galleryFile)); }break;
           case '57p': { bedWindowsPhNotifier.addBedWindowsPh(BedWindowsPh(galleryFile)); }break;
+          case '61p': { bdfourFramePhNotifier.addBdfourFramePh(BdfourFramePh(galleryFile)); }break;
+          case '62p': { bdfourExdoorPhNotifier.addBdfourExdoorPh(BdfourExdoorPh(galleryFile)); }break;
+          case '63p': { bdfourIndoorPhNotifier.addBdfourIndoorPh(BdfourIndoorPh(galleryFile)); }break;
+          case '64p': { bdfourCeilingPhNotifier.addBdfourCeilingPh(BdfourCeilingPh(galleryFile)); }break;
+          case '65p': { bdfourLightPhNotifier.addBdfourLightPh(BdfourLightPh(galleryFile)); }break;
+          case '66p': { bdfourWallsPhNotifier.addBdfourWallsPh(BdfourWallsPh(galleryFile)); }break;
+          case '67p': { bdfourWindowsPhNotifier.addBdfourWindowsPh(BdfourWindowsPh(galleryFile)); }break;
 
           default: { print('unable to determine'); } break;}
         }
@@ -560,7 +590,7 @@ _buildtitlefloor (){
                   child: Image.file(bedWallsPhNotifier.bedWallsPhList[index].photo,fit: BoxFit.cover,),
                   borderRadius: BorderRadius.circular(1),
                 ),)],);});}break;
-        case '57p': {
+        case '67p': {
           return List.generate(bedWindowsPhNotifier.bedWindowsPhList.length, (index){
             return Column (children: <Widget>[  SizedBox(height: 10,),
               Container( height: 100, width: 170,
@@ -569,11 +599,106 @@ _buildtitlefloor (){
                   child: Image.file(bedWindowsPhNotifier.bedWindowsPhList[index].photo,fit: BoxFit.cover,),
                   borderRadius: BorderRadius.circular(1),
                 ),)],);});}break;
-
+        case '61p': {
+          return List.generate(bdfourFramePhNotifier.bdfourFramePhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourFramePhNotifier.bdfourFramePhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '62p': {
+          return List.generate(bdfourExdoorPhNotifier.bdfourExdoorPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourExdoorPhNotifier.bdfourExdoorPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '63p': {
+          return List.generate(bdfourIndoorPhNotifier.bdfourIndoorPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourIndoorPhNotifier.bdfourIndoorPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '64p': {
+          return List.generate(bdfourCeilingPhNotifier.bdfourCeilingPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourCeilingPhNotifier.bdfourCeilingPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '65p': {
+          return List.generate(bdfourLightPhNotifier.bdfourLightPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourLightPhNotifier.bdfourLightPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '66p': {
+          return List.generate(bdfourWallsPhNotifier.bdfourWallsPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourWallsPhNotifier.bdfourWallsPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
+        case '67p': {
+          return List.generate(bdfourWindowsPhNotifier.bdfourWindowsPhList.length, (index){
+            return Column (children: <Widget>[  SizedBox(height: 10,),
+              Container( height: 100, width: 170,
+                decoration: BoxDecoration( borderRadius: BorderRadius.circular(1) ),
+                child: ClipRRect(
+                  child: Image.file(bdfourWindowsPhNotifier.bdfourWindowsPhList[index].photo,fit: BoxFit.cover,),
+                  borderRadius: BorderRadius.circular(1),
+                ),)],);});}break;
 
         default : {print('Error PhotoLoading');}break;
       }
     }
+
+    var isLandscape = MediaQuery.of(context).orientation == Orientation.portrait;
+    _camalert(){
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(20.0)), //this right here
+              child: Container(
+                height: 150,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [SizedBox(height: 10,),
+                      Text('Please Rotate Your Phone',style: TextStyle( fontFamily: 'alice',fontSize: 20,),),
+                      SizedBox(height: 30,),
+                      Row(mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+
+                          SizedBox(height: 30,width: 80,
+                            child: InkWell(
+
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Center(
+                                child: Text(
+                                  "Ok",
+                                  style: TextStyle(color: Color(0xff684c4c), fontFamily: 'alice',fontSize: 25,),
+                                ), ), ), ), ], ) ], ), ), ), ); });}
+
 
     return Scaffold(
       appBar: PreferredSize(
@@ -622,8 +747,8 @@ _buildtitlefloor (){
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   InkWell(
-                    onTap: (){
-                      imageSelectorCamera();
+                    onTap: (){if(isLandscape == true){
+                      imageSelectorCamera();}else {_camalert();}
                     },
                     child: Container(
                       decoration: BoxDecoration(

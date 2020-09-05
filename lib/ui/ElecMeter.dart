@@ -380,7 +380,7 @@ class _meterElecState extends State<meterElec> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(elecMeterPhNotifier.elecMeterPhList.isEmpty ? '0': '${elecMeterPhNotifier.elecMeterPhList.length}',

@@ -13,6 +13,8 @@ import 'package:inventorycheck/ui/newinventory.dart';
 import 'package:provider/provider.dart';
 import 'package:exif/exif.dart';
 import 'package:image/image.dart' as img;
+import 'package:intl/intl.dart';
+
 
 class IntroInvent extends StatefulWidget {
   @override
@@ -28,7 +30,7 @@ class _IntroInventState extends State<IntroInvent> {
   String _colourtxex;
   String _conditiontxex;
   File photo;
-  final curtime = DateTime.now();
+  final curtime = '${DateFormat("dd-MM-yyyy").format(DateTime.now())}';
 
   Widget _newproptitle (){
     return Container(
@@ -96,9 +98,9 @@ class _IntroInventState extends State<IntroInvent> {
         key: _introformKey,
         child: new Theme(
           data: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Color(0xff684c4c),
             accentColor: Colors.white,
-            hintColor: Colors.deepPurpleAccent,
+            hintColor: Color(0xff684c4c),
           ),
           child: Column(
             children: <Widget>[
@@ -263,7 +265,7 @@ class _IntroInventState extends State<IntroInvent> {
 //                        }
 //                        return null;
 //                      },
-                      initialValue: '${curtime.day}/${curtime.month}/${curtime.year}  ',
+                      initialValue: curtime,
                       onSaved: (String value) {
                         _colourtxex = value;
                         print('Name: $value');
@@ -290,88 +292,7 @@ class _IntroInventState extends State<IntroInvent> {
       ),
     );
   }
-  Widget _buildbtncam(){
-    IntroImgNotify introImgNotify = Provider.of<IntroImgNotify>(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(top:5.0),
-      child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.9),
-            spreadRadius: 1,
-            offset: Offset(3, 3),
-          ),
-        ],
-          borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(50.0),
-              topRight: const Radius.circular(50.0),
-              bottomLeft: const Radius.circular(50.0),
-              bottomRight: const Radius.circular(50.0)),
-          color: Color(0xff684c4c).withOpacity(0.3),),height: 80,width: 80,
-        child: CircleAvatar(
-                                radius: 39,
-                                backgroundColor: Colors.black,
-                                child: photo == null
-                                    ? GestureDetector(
-                                        onTap: () async {
-                                          File getPic = await ImagePicker.pickImage(
-                                              source: ImageSource.camera);
-                                          if (getPic != null) {
-                                            setState(() {
-                                              photo = getPic;
-                                              var datetim = '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}--${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}';
-                                              var decodeImg = imgg.decodeImage(photo.readAsBytesSync());
-                                              imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
-                                              var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
-                                              var finalImage = File(photo.path)..writeAsBytesSync(encodeImage);
-
-                                              introImgNotify.addIntroImg(IntroImg(finalImage));
-
-                                            });
-                                          }
-                                        },
-                                        child: introImgNotify.introImgList.isEmpty ? Image.asset('assets/camnew.png') : CircleAvatar(radius: 39,backgroundImage: FileImage(introImgNotify.introImgList.last.imageintro),),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () async {
-                                          File getPic = await ImagePicker.pickImage(
-                                              source: ImageSource.camera);
-
-                                          if (getPic != null)  {
-                                            setState(() async{
-                                              photo = getPic;
-//
-//                                            final originalFile = File(photo.path);
-//                                            List<int> imageBytes = await originalFile.readAsBytes();
-//                                            final originalImage = img.decodeImage(imageBytes);
-//                                            img.Image fixedImage;
-//                                            fixedImage = img.copyRotate(originalImage, 90);
-//                                            final fixedFile =
-//                                            await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
-
-                                              var datetim = '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}--${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}';
-                                              var decodeImg = imgg.decodeImage(photo.readAsBytesSync());
-                                              imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
-                                              var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
-                                              var finalImage = File(photo.path)..writeAsBytesSync(encodeImage);
-
-                                              introImgNotify.addIntroImg(IntroImg(finalImage));
-
-                                            });
-                                          }
-                                        },
-                                        child: CircleAvatar(
-                                          radius: 39,
-                                          backgroundImage: FileImage(introImgNotify.introImgList.last.imageintro),
-                                        ),
-                                      ),
-                              ),
-      ),
-    );
-
-
-}
 _saveform(){
   IntroNotifier introNotifier = Provider.of<IntroNotifier>(context);
 
@@ -434,7 +355,7 @@ _saveform(){
   }
 
   _messagebox(){
-    return                   showDialog(
+    return showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
@@ -494,18 +415,133 @@ _saveform(){
             ),
           );
         });}
+  _camalert(){
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              height: 150,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [SizedBox(height: 10,),
+                    Text('Please use Landscape mode',style: TextStyle( fontFamily: 'alice',fontSize: 20,),),
+                    SizedBox(height: 30,),
+                    Row(mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+
+                        SizedBox(height: 30,width: 80,
+                          child: InkWell(
+
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Center(
+                              child: Text(
+                                "Ok",
+                                style: TextStyle(color: Color(0xff684c4c), fontFamily: 'alice',fontSize: 25,),
+                              ), ), ), ), ], ) ], ), ), ), ); });}
+
 
   @override
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
+    var isLandscape = MediaQuery.of(context).orientation == Orientation.portrait;
+    Widget _buildbtncam(){
+      IntroImgNotify introImgNotify = Provider.of<IntroImgNotify>(context);
+
+      return Padding(
+        padding: const EdgeInsets.only(top:5.0),
+        child: Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.9),
+              spreadRadius: 1,
+              offset: Offset(3, 3),
+            ),
+          ],
+            borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(50.0),
+                topRight: const Radius.circular(50.0),
+                bottomLeft: const Radius.circular(50.0),
+                bottomRight: const Radius.circular(50.0)),
+            color: Color(0xff684c4c).withOpacity(0.3),),height: 80,width: 80,
+          child: CircleAvatar(
+            radius: 39,
+            backgroundColor: Colors.black,
+            child: photo == null
+                ? GestureDetector(
+              onTap: () async {
+               if(isLandscape == true){
+                 File getPic = await ImagePicker.pickImage(
+                     source: ImageSource.camera);
+                 if (getPic != null) {
+                   setState(() {
+                     photo = getPic;
+                     var datetim = '${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ';
+                     var decodeImg = imgg.decodeImage(photo.readAsBytesSync());
+                     imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
+                     var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
+                     var finalImage = File(photo.path)..writeAsBytesSync(encodeImage);
+
+                     introImgNotify.addIntroImg(IntroImg(finalImage));
+
+                   });
+                 }
+               }else {_camalert();}
+              },
+              child: introImgNotify.introImgList.isEmpty ? Image.asset('assets/camnew.png') : CircleAvatar(radius: 39,backgroundImage: FileImage(introImgNotify.introImgList.last.imageintro),),
+            )
+                : GestureDetector(
+              onTap: () async {
+            if(isLandscape == true){
+              File getPic = await ImagePicker.pickImage(
+                  source: ImageSource.camera);
+
+              if (getPic != null)  {
+                setState(() async{
+                  photo = getPic;
+//
+//                                            final originalFile = File(photo.path);
+//                                            List<int> imageBytes = await originalFile.readAsBytes();
+//                                            final originalImage = img.decodeImage(imageBytes);
+//                                            img.Image fixedImage;
+//                                            fixedImage = img.copyRotate(originalImage, 90);
+//                                            final fixedFile =
+//                                            await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
+
+                  var datetim = '${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ';                  var decodeImg = imgg.decodeImage(photo.readAsBytesSync());
+                  imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
+                  var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
+                  var finalImage = File(photo.path)..writeAsBytesSync(encodeImage);
+
+                  introImgNotify.addIntroImg(IntroImg(finalImage));
+
+                });
+              }
+            } else {_camalert();}
+              },
+              child: CircleAvatar(
+                radius: 39,
+                backgroundImage: FileImage(introImgNotify.introImgList.last.imageintro),
+              ),
+            ),
+          ),
+        ),
+      );
+
+
+    }
+
     return Container(decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage("assets/bg.png"), fit: BoxFit.cover)),
     child: Scaffold(
-      appBar: PreferredSize(
-        child: Container(),
-        preferredSize: Size.fromHeight(0.0),
-      ),
+      appBar: PreferredSize(child: Container(), preferredSize: Size.fromHeight(0.0),),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
@@ -514,6 +550,7 @@ _saveform(){
           _newpropsubtitle(),
           _buildbtncam(),
           _buildformdescritpion(),
+
         ],),
       ),
         floatingActionButton: showFab ? Stack(

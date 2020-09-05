@@ -2,19 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as imgg;
-import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
-import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
-import 'package:inventorycheck/NotifierList/HallwayPhoto.dart';
-import 'package:inventorycheck/NotifierList/KitchenPhoto.dart';
 import 'package:inventorycheck/NotifierList/MeterText.dart';
-import 'package:inventorycheck/NotifierList/SmotePhoto.dart';
-import 'package:inventorycheck/hasny/record.dart';
-import 'package:inventorycheck/model/imagedata.dart';
-import 'package:inventorycheck/model/textdata.dart';
-import 'package:inventorycheck/notify/imagesnotifier.dart';
-import 'package:inventorycheck/notify/textnotifier.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class meterImg extends StatefulWidget {
   final String Route;
@@ -74,15 +65,44 @@ _buildtitlefloor (){
     GasMeterPhNotifier gasMeterPhNotifier = Provider.of<GasMeterPhNotifier>(context);
     ElecMeterPhNotifier elecMeterPhNotifier = Provider.of<ElecMeterPhNotifier>(context);
     SmokeDePhNotifier smokeDePhNotifier = Provider.of<SmokeDePhNotifier>(context);
+    var isLandscape = MediaQuery.of(context).orientation == Orientation.portrait;
+    _camalert(){
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(20.0)), //this right here
+              child: Container(
+                height: 150,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [SizedBox(height: 10,),
+                      Text('Please Rotate Your Phone',style: TextStyle( fontFamily: 'alice',fontSize: 20,),),
+                      SizedBox(height: 30,),
+                      Row(mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
 
+                          SizedBox(height: 30,width: 80,
+                            child: InkWell(
+
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Center(
+                                child: Text(
+                                  "Ok",
+                                  style: TextStyle(color: Color(0xff684c4c), fontFamily: 'alice',fontSize: 25,),
+                                ), ), ), ), ], ) ], ), ), ), ); });}
 
     imageSelectorCamera() async {
 
       cameraFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
       );
-      var datetim = '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}--${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}';
-      var decodeImg = imgg.decodeImage(cameraFile.readAsBytesSync());
+      var datetim = '${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ';      var decodeImg = imgg.decodeImage(cameraFile.readAsBytesSync());
       imgg.drawString(decodeImg, imgg.arial_48, 50, 50, datetim);
       var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
       var finalImage = File(cameraFile.path)..writeAsBytesSync(encodeImage);
@@ -128,7 +148,8 @@ _buildtitlefloor (){
     Future<File> drawTextOnImage() async {
       var image = await ImagePicker.pickImage(source: ImageSource.camera);
       var decodeImg = imgg.decodeImage(image.readAsBytesSync());
-      imgg.drawString(decodeImg, imgg.arial_48, 0, 0, DateTime.now().toString());
+      var datetim = '${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ';
+      imgg.drawString(decodeImg, imgg.arial_48, 0, 0, datetim);
       var encodeImage = imgg.encodeJpg(decodeImg, quality: 100);
       var finalImage = File(image.path)..writeAsBytesSync(encodeImage);
       return finalImage;
@@ -167,6 +188,8 @@ _buildtitlefloor (){
         default : {print('Error PhotoLoading');}break;
       }
     }
+
+
 
     return Scaffold(
       appBar: PreferredSize(
@@ -215,8 +238,9 @@ _buildtitlefloor (){
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   InkWell(
-                    onTap: (){
+                    onTap: (){if(isLandscape == true){
                       imageSelectorCamera();
+                    }else {_camalert();}
                     },
                     child: Container(
                       decoration: BoxDecoration(

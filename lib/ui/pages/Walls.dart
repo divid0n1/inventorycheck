@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -40,11 +42,12 @@ class _WallsState extends State<Walls> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '16': { _title = 'Exterior'; } break;
+      case '16': { _title = 'Bedroom 2'; } break;
       case '26': { _title = 'Hallway'; } break;
-      case '36': { _title = 'Smote Detector'; } break;
+      case '36': { _title = 'Bedroom 3'; } break;
       case '46': { _title = 'Kitchen'; } break;
       case '56': { _title = 'Bedroom'; } break;
+      case '66': { _title = 'Bedroom 4'; } break;
       default:
         {
           print('unable to determine');
@@ -61,6 +64,7 @@ class _WallsState extends State<Walls> {
       case '36': { Navigator.push(context, MaterialPageRoute(builder: (context) => Windows(Route: '37',))); } break;
       case '46': { Navigator.push(context, MaterialPageRoute(builder: (context) => Windows(Route: '47',))); } break;
       case '56': { Navigator.push(context, MaterialPageRoute(builder: (context) => Windows(Route: '57',))); } break;
+      case '66': { Navigator.push(context, MaterialPageRoute(builder: (context) => Windows(Route: '67',))); } break;
 
       default:
         {
@@ -146,6 +150,9 @@ class _WallsState extends State<Walls> {
     SmoWallsPhNotifier smoWallsPhNotifier = Provider.of<SmoWallsPhNotifier>(context);
     KitWallsPhNotifier kitWallsPhNotifier = Provider.of<KitWallsPhNotifier>(context);
     BedWallsPhNotifier bedWallsPhNotifier = Provider.of<BedWallsPhNotifier>(context);
+    BdfourWallsNotifier bdfourWallsNotifier = Provider.of<BdfourWallsNotifier>(context);
+    BdfourWallsPhNotifier bdfourWallsPhNotifier = Provider.of<BdfourWallsPhNotifier>(context);
+
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
     _ImgCount(){
       switch(widget.Route){
@@ -154,6 +161,7 @@ class _WallsState extends State<Walls> {
         case '36': {return smoWallsPhNotifier.smoWallsPhList.isNotEmpty ? smoWallsPhNotifier.smoWallsPhList.length : '0';} break;
         case '46': {return kitWallsPhNotifier.kitWallsPhList.isNotEmpty ? kitWallsPhNotifier.kitWallsPhList.length : '0';} break;
         case '56': {return bedWallsPhNotifier.bedWallsPhList.isNotEmpty ? bedWallsPhNotifier.bedWallsPhList.length : '0';} break;
+        case '66': {return bdfourWallsPhNotifier.bdfourWallsPhList.isNotEmpty ? bdfourWallsPhNotifier.bdfourWallsPhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -183,6 +191,10 @@ class _WallsState extends State<Walls> {
           setState(() {
             bedWallsNotifier.addBedWalls(BedWalls(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '66': {
+          setState(() {
+            bdfourWallsNotifier.addBdfourWalls(BdfourWalls(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -205,6 +217,9 @@ class _WallsState extends State<Walls> {
         case '56': {
           return  bedWallsNotifier.bedWallsList.isEmpty ? '' : '${bedWallsNotifier.bedWallsList.last.description}';
         } break;
+        case '66': {
+          return  bdfourWallsNotifier.bdfourWallsList.isEmpty ? '' : '${bdfourWallsNotifier.bdfourWallsList.last.description}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
 
@@ -226,6 +241,9 @@ class _WallsState extends State<Walls> {
         case '56': {
           return  bedWallsNotifier.bedWallsList.isEmpty ? '' : '${bedWallsNotifier.bedWallsList.last.quantity}';
         } break;
+        case '66': {
+          return  bdfourWallsNotifier.bdfourWallsList.isEmpty ? '' : '${bdfourWallsNotifier.bdfourWallsList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -245,6 +263,9 @@ class _WallsState extends State<Walls> {
         } break;
         case '56': {
           return  bedWallsNotifier.bedWallsList.isEmpty ? '' : '${bedWallsNotifier.bedWallsList.last.colour}';
+        } break;
+        case '66': {
+          return  bdfourWallsNotifier.bdfourWallsList.isEmpty ? '' : '${bdfourWallsNotifier.bdfourWallsList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -266,6 +287,9 @@ class _WallsState extends State<Walls> {
         case '56': {
           return  bedWallsNotifier.bedWallsList.isEmpty ? '' : '${bedWallsNotifier.bedWallsList.last.condition}';
         } break;
+        case '66': {
+          return  bdfourWallsNotifier.bdfourWallsList.isEmpty ? '' : '${bdfourWallsNotifier.bdfourWallsList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -276,6 +300,7 @@ class _WallsState extends State<Walls> {
         case '36': {return '36p';} break;
         case '46': {return '46p';} break;
         case '56': {return '56p';} break;
+        case '66': {return '66p';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -327,7 +352,7 @@ class _WallsState extends State<Walls> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -370,7 +395,7 @@ class _WallsState extends State<Walls> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -504,7 +529,7 @@ class _WallsState extends State<Walls> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

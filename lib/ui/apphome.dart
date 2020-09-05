@@ -1,13 +1,18 @@
-import 'dart:io';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:inventorycheck/ui/myproperty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 import 'introInvent.dart';
 
-class AppHome extends StatelessWidget {
+class AppHome extends StatefulWidget {
+
+  @override
+  _AppHomeState createState() => _AppHomeState();
+}
+class _AppHomeState extends State<AppHome> {
   Widget _buildtitle() {
     return Container(
         padding: EdgeInsets.only(top: 40),
@@ -111,7 +116,7 @@ class AppHome extends StatelessWidget {
       width: 240,
       child: Center(
           child: Text(
-            "Contact",
+            "App support",
             style: TextStyle(
               color: Color(0xff684c4c),
               fontFamily: 'alice',
@@ -120,78 +125,6 @@ class AppHome extends StatelessWidget {
           )),
     );
   }
-
-
-/*  Future<void> send() async {
-    if (Platform.isIOS) {
-      final bool canSend = await FlutterMailer.canSendMail();
-      if (!canSend) {
-        const SnackBar snackbar =
-        const SnackBar(content: Text('no Email App Available'));
-        print('scaffoldkey current state show snack bar');
-//        _scafoldKey.currentState.showSnackBar(snackbar);
-        return;
-      }
-    }
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    final MailOptions mailOptions = MailOptions(
-      body: 'bodytext',
-      subject: 'subtext',
-      recipients: <String>['recep@example.com'],
-      isHTML: true,
-      // bccRecipients: ['other@example.com'],
-      ccRecipients: <String>['ccc@example.com'],
-//      attachments: attachment,
-    );
-
-    String platformResponse;
-
-    try {
-      await FlutterMailer.send(mailOptions);
-      platformResponse = 'success';
-    } on PlatformException catch (error) {
-      platformResponse = error.toString();
-      print(error);
-      if (!mounted) {
-        return;
-      } await print('show another dialog'
-      );
-//      await showDialog<void>(
-//          context: _scafoldKey.currentContext,
-//          builder: (BuildContext context) => AlertDialog(
-//            shape: RoundedRectangleBorder(
-//                borderRadius: BorderRadius.circular(4)),
-//            content: Column(
-//              mainAxisAlignment: MainAxisAlignment.start,
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              mainAxisSize: MainAxisSize.min,
-//              children: <Widget>[
-//                Text(
-//                  'Message',
-//                  style: Theme.of(context).textTheme.subtitle1,
-//                ),
-//                Text(error.message),
-//              ],
-//            ),
-//            contentPadding: const EdgeInsets.all(26),
-//            title: Text(error.code),
-//          ));
-    } catch (error) {
-      platformResponse = error.toString();
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return;
-    } print ('trhid dialog');
-//    _scafoldKey.currentState.showSnackBar(SnackBar(
-//      content: Text(platformResponse),
-//    ));
-  }*/
-
 
 
 
@@ -204,6 +137,9 @@ class AppHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -214,6 +150,8 @@ class AppHome extends StatelessWidget {
             children: <Widget>[
               _buildtitle(),
               _builddescription(),
+              Column(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
               SizedBox(
                 height: 100,
               ),
@@ -263,7 +201,15 @@ class AppHome extends StatelessWidget {
 
                 },
                 child: _btncontact(),
-              )
+              ),
+//                  fud(),
+                IconButton(icon: Icon(Icons.arrow_right_alt_outlined),
+                onPressed: (){
+                   print('${DateFormat("dd-MM-yyyy").format(DateTime.now())} ${DateFormat("Hm").format(DateTime.now())} ');
+
+                },)
+                ],),
+
             ],
           ),
         ));

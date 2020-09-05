@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventorycheck/NotifierList/BdfourPhoto.dart';
+import 'package:inventorycheck/NotifierList/BdfourText.dart';
 import 'package:inventorycheck/NotifierList/BedroomPhoto.dart';
 import 'package:inventorycheck/NotifierList/BedroomText.dart';
 import 'package:inventorycheck/NotifierList/ExteriorPhoto.dart';
@@ -41,11 +43,12 @@ class _WindowsState extends State<Windows> {
     super.initState();
 //switch
     switch(widget.Route) {
-      case '17': { _title = 'Exterior'; } break;
+      case '17': { _title = 'Bedroom 2'; } break;
       case '27': { _title = 'Hallway'; } break;
-      case '37': { _title = 'Smote Detector'; } break;
+      case '37': { _title = 'Bedroom 3'; } break;
       case '47': { _title = 'Kitchen'; } break;
       case '57': { _title = 'Bedroom'; } break;
+      case '67': { _title = 'Bedroom 4'; } break;
 
       default:
         {
@@ -63,6 +66,7 @@ class _WindowsState extends State<Windows> {
       case '37': { Navigator.push(context, MaterialPageRoute(builder: (context) => Category(Route: '3',))); } break;
       case '47': { Navigator.push(context, MaterialPageRoute(builder: (context) => Category(Route: '4',))); } break;
       case '57': { Navigator.push(context, MaterialPageRoute(builder: (context) => Category(Route: '5',))); } break;
+      case '67': { Navigator.push(context, MaterialPageRoute(builder: (context) => Category(Route: '6',))); } break;
 
       default:
         {
@@ -146,6 +150,9 @@ class _WindowsState extends State<Windows> {
     SmoWindowsPhNotifier smoWindowsPhNotifier = Provider.of<SmoWindowsPhNotifier>(context);
     KitWindowsPhNotifier kitWindowsPhNotifier = Provider.of<KitWindowsPhNotifier>(context);
     BedWindowsPhNotifier bedWindowsPhNotifier = Provider.of<BedWindowsPhNotifier>(context);
+    BdfourWindowsNotifier bdfourWindowsNotifier = Provider.of<BdfourWindowsNotifier>(context);
+    BdfourWindowsPhNotifier bdfourWindowsPhNotifier = Provider.of<BdfourWindowsPhNotifier>(context);
+
     _ImgCount(){
       switch(widget.Route){
         case '17': {return extWindowsPhNotifier.extWindowsPhList.isNotEmpty ? extWindowsPhNotifier.extWindowsPhList.length : '0';} break;
@@ -153,6 +160,7 @@ class _WindowsState extends State<Windows> {
         case '37': {return smoWindowsPhNotifier.smoWindowsPhList.isNotEmpty ? smoWindowsPhNotifier.smoWindowsPhList.length : '0';} break;
         case '47': {return kitWindowsPhNotifier.kitWindowsPhList.isNotEmpty ? kitWindowsPhNotifier.kitWindowsPhList.length : '0';} break;
         case '57': {return bedWindowsPhNotifier.bedWindowsPhList.isNotEmpty ? bedWindowsPhNotifier.bedWindowsPhList.length : '0';} break;
+        case '67': {return bdfourWindowsPhNotifier.bdfourWindowsPhList.isNotEmpty ? bdfourWindowsPhNotifier.bdfourWindowsPhList.length : '0';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -184,6 +192,10 @@ class _WindowsState extends State<Windows> {
           setState(() {
             bedWindowsNotifier.addBedWindows(BedWindows(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
           });        } break;
+        case '67': {
+          setState(() {
+            bdfourWindowsNotifier.addBdfourWindows(BdfourWindows(_descriptiontx,_quantitytxex,_colourtxex,_conditiontxex));
+          });        } break;
         default: { print('unable to determine');} break;
       }
 
@@ -206,6 +218,9 @@ class _WindowsState extends State<Windows> {
         case '57': {
           return  bedWindowsNotifier.bedWindowsList.isEmpty ? '' : '${bedWindowsNotifier.bedWindowsList.last.description}';
         } break;
+        case '67': {
+          return  bdfourWindowsNotifier.bdfourWindowsList.isEmpty ? '' : '${bdfourWindowsNotifier.bdfourWindowsList.last.description}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
 
@@ -227,6 +242,9 @@ class _WindowsState extends State<Windows> {
         case '57': {
           return  bedWindowsNotifier.bedWindowsList.isEmpty ? '' : '${bedWindowsNotifier.bedWindowsList.last.quantity}';
         } break;
+        case '67': {
+          return  bdfourWindowsNotifier.bdfourWindowsList.isEmpty ? '' : '${bdfourWindowsNotifier.bdfourWindowsList.last.quantity}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -246,6 +264,9 @@ class _WindowsState extends State<Windows> {
         } break;
         case '57': {
           return  bedWindowsNotifier.bedWindowsList.isEmpty ? '' : '${bedWindowsNotifier.bedWindowsList.last.colour}';
+        } break;
+        case '67': {
+          return  bdfourWindowsNotifier.bdfourWindowsList.isEmpty ? '' : '${bdfourWindowsNotifier.bdfourWindowsList.last.colour}';
         } break;
         default:   { print('unable to determine'); } break;
       }
@@ -267,6 +288,9 @@ class _WindowsState extends State<Windows> {
         case '57': {
           return  bedWindowsNotifier.bedWindowsList.isEmpty ? '' : '${bedWindowsNotifier.bedWindowsList.last.condition}';
         } break;
+        case '67': {
+          return  bdfourWindowsNotifier.bdfourWindowsList.isEmpty ? '' : '${bdfourWindowsNotifier.bdfourWindowsList.last.condition}';
+        } break;
         default:   { print('unable to determine'); } break;
       }
     }
@@ -277,6 +301,7 @@ class _WindowsState extends State<Windows> {
         case '37': {return '37p';} break;
         case '47': {return '47p';} break;
         case '57': {return '57p';} break;
+        case '67': {return '67p';} break;
         default: {print('I dont know');} break;
       }
     }
@@ -327,7 +352,7 @@ class _WindowsState extends State<Windows> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 150,
+                      width: 140,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -369,7 +394,7 @@ class _WindowsState extends State<Windows> {
                     Container(
 //                      width: MediaQuery.of(context).copyWith().size.width / 4,
 //                      height: MediaQuery.of(context).copyWith().size.height / 10,
-                      width: 180,
+                      width: 170,
                       height: 94,
                       child: Column(
                         children: <Widget>[
@@ -504,7 +529,7 @@ class _WindowsState extends State<Windows> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 42,
+                                        height: 49,
                                       ),
                                       Center(
                                           child: Text(

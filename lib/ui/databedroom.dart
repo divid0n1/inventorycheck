@@ -3,20 +3,17 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
-import 'package:inventorycheck/hasny/record.dart';
 import 'package:inventorycheck/model/audio.dart';
 import 'package:inventorycheck/model/textdata.dart';
 import 'package:inventorycheck/notify/audionotifier.dart';
 import 'package:inventorycheck/notify/imagesnotifier.dart';
 import 'package:inventorycheck/notify/textnotifier.dart';
 import 'package:flutter/material.dart';
-import 'package:inventorycheck/ui/apphome.dart';
 import 'package:inventorycheck/ui/ImgGallery.dart';
 import 'package:inventorycheck/ui/newinventory.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:file/local.dart';
-import 'package:inventorycheck/hasny/record.dart' as hasn;
 
 import 'Tansuh.dart';
 
